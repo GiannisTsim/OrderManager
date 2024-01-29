@@ -1,0 +1,34 @@
+@model OrderManager.MvcApp.Areas.Administration.Models.Retailer.ModifyViewModel
+@{
+    ViewData["Title"] = "Modify retailer";
+}
+
+<h3>Modify retailer "@Model.Retailer.Name" (VAT Id: @Model.Retailer.VatId)</h3>
+
+<form autocomplete="off" method="post">
+
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <input asp-for="ModifyInputModel.UpdatedDtm" asp-format="{0:o}"/>
+
+    <div class="mb-3">
+        <label asp-for="ModifyInputModel.VatId" class="form-label"></label>
+        <input asp-for="ModifyInputModel.VatId" class="form-control"/>
+        <span asp-validation-for="ModifyInputModel.VatId" class="text-danger"></span>
+    </div>
+
+    <div class="mb-3">
+        <label asp-for="ModifyInputModel.Name" class="form-label"></label>
+        <input asp-for="ModifyInputModel.Name" class="form-control"/>
+        <span asp-validation-for="ModifyInputModel.Name" class="text-danger"></span>
+    </div>
+
+    <button class="btn btn-secondary" type="reset">Reset</button>
+    <button class="btn btn-primary" type="submit">Submit</button>
+</form>
+
+<a asp-action="Index">Back to List</a>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml"/>
+}

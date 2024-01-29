@@ -1,0 +1,13 @@
+@model OrderManager.MvcApp.Areas.Administration.Models.Retailer.ObsoleteViewModel
+
+<h3>Are you sure you want to delete retailer "@Model.Retailer.Name" (@Model.Retailer.VatId) ?</h3>
+
+<form method="post">
+    <div asp-validation-summary="All" class="text-danger" role="alert"></div>
+
+    <input asp-for="ObsoleteInputModel.UpdatedDtm" asp-format="{0:o}" type="hidden"/>
+
+    <button class="btn btn-danger" type="submit">Confirm</button>
+</form>
+
+<a asp-action="Index">Back to List</a>

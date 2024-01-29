@@ -1,0 +1,34 @@
+@model OrderManager.MvcApp.Areas.Administration.Models.Retailer.AddViewModel
+@{
+    ViewData["Title"] = "New retailer form";
+}
+
+<div class="col-lg-6 offset-lg-3">
+
+    <h3>Add new retailer</h3>
+
+    <form autocomplete="off" method="post">
+        <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="AddInputModel.VatId" class="form-control"/>
+            <label asp-for="AddInputModel.VatId"></label>
+            <span asp-validation-for="AddInputModel.VatId"></span>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input asp-for="AddInputModel.Name" class="form-control"/>
+            <label asp-for="AddInputModel.Name" class="form-label"></label>
+            <span asp-validation-for="AddInputModel.Name"></span>
+        </div>
+
+        <button class="btn btn-primary" type="submit">Submit</button>
+    </form>
+
+    <a asp-action="Index">Back to List</a>
+
+    @section Scripts {
+        <partial name="_ValidationScriptsPartial.cshtml"/>
+    }
+
+</div>

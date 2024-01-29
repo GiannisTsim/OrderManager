@@ -1,0 +1,27 @@
+<hr/>
+<div>Validation summary (All):</div>
+<div asp-validation-summary="All" class="text-danger" role="alert"></div>
+<hr/>
+<div>Validation summary (Model only):</div>
+<div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+<hr/>
+<ul>
+    @foreach (var pair in ViewData.ModelState)
+    {
+        if (@pair.Value.Errors.Count != 0)
+        {
+            <li>
+                '@pair.Key'
+
+                @foreach (var error in @pair.Value.Errors)
+                {
+                    <ul>
+                        <li>@error.ErrorMessage</li>
+                    </ul>
+                }
+
+            </li>
+        }
+    }
+</ul>
+<hr/>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<databaseChangeLog
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        xmlns="http://www.liquibase.org/xml/ns/dbchangelog"
+        xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-latest.xsd">
+
+    <include file="domain/domain.xml" relativeToChangelogFile="true"/>
+    <include file="message/message.xml" relativeToChangelogFile="true"/>
+    <include file="table/table.xml" relativeToChangelogFile="true"/>
+    <include file="index/index.xml" relativeToChangelogFile="true"/>
+    <include file="function/function.xml" relativeToChangelogFile="true"/>
+    <include file="constraint/constraint.xml" relativeToChangelogFile="true"/>
+    <include file="transaction/transaction.xml" relativeToChangelogFile="true"/>
+    <include file="view/view.xml" relativeToChangelogFile="true"/>
+    <include file="data/data.xml" relativeToChangelogFile="true"/>
+
+</databaseChangeLog>
