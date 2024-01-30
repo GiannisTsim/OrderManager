@@ -18,28 +18,18 @@ BEGIN
     -- Validation checks --
     IF @AdminNo IS NULL
         BEGIN
-            IF EXISTS
-                (
-                    SELECT 1
-                    FROM Person
-                    WHERE Email = @Email
-                )
-                BEGIN
-                    RAISERROR (51107, -1, @State, @Email);
-                END
+            EXEC Person_Add_vtr @Email;
         END
-    ELSE
+    ELSE IF NOT EXISTS
+        (
+            SELECT 1
+            FROM Person
+            WHERE PersonNo = @AdminNo
+        )
         BEGIN
-            IF NOT EXISTS
-                (
-                    SELECT 1
-                    FROM Person
-                    WHERE PersonNo = @AdminNo
-                )
-                BEGIN
-                    RAISERROR (51108, -1, @State, @AdminNo);
-                END
+            RAISERROR (51108, -1, @State, @AdminNo);
         END
+
     IF EXISTS
         (
             SELECT 1
@@ -50,6 +40,7 @@ BEGIN
         BEGIN
             RAISERROR (51202, -1, @State, @AdminNo, @AdminRoleCode);
         END
+        
     -- Validation successful--
     RETURN 0;
 END
@@ -62,13 +53,13 @@ GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE PersonAdminRole_Add_tr
 (
-    @AdminNo        PersonNo OUTPUT,
     @AdminRoleCode  AdminRoleCode,
-    @Email          Email,
-    @EmailConfirmed _Bool,
-    @PersonTypeCode PersonTypeCode,
-    @InvitationDtm  _Dtm,
-    @PasswordHash   _Text
+    @AdminNo        PersonNo = NULL OUTPUT,
+    @Email          Email = NULL,
+    @EmailConfirmed _Bool = NULL,
+    @PersonTypeCode PersonTypeCode = NULL,
+    @InvitationDtm  _Dtm = NULL,
+    @PasswordHash   _Text = NULL
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
@@ -134,22 +125,8 @@ BEGIN
         -- Database updates --
         IF @AdminNo IS NULL
             BEGIN
-                EXEC Person_Add_utr @AdminNo, @Email, @EmailConfirmed, @PersonTypeCode, @InvitationDtm, @PasswordHash;
-                --                 SET @AdminNo = COALESCE((
-                --                                              SELECT MAX(PersonNo) + 1
-                --                                              FROM Person
-                --                                          ), 1);
-                -- 
-                --                 INSERT INTO Person(PersonNo, Email, EmailConfirmed, UpdatedDtm, IsObsolete, PersonTypeCode)
-                --                 VALUES (@AdminNo, @Email, @EmailConfirmed, SYSDATETIMEOFFSET(), 0, @PersonTypeCode);
-                --                 IF @PersonTypeCode = 'I'
-                --                     BEGIN
-                --                         INSERT INTO Person_Invitee (InviteeNo, InvitationDtm) VALUES (@AdminNo, @InvitationDtm);
-                --                     END
-                --                 ELSE -- IF @PersonTypeCode = 'U'
-                --                     BEGIN
-                --                         INSERT INTO Person_User (UserNo, PasswordHash) VALUES (@AdminNo, @PasswordHash);
-                --                     END
+                EXEC Person_Add_utr @Email, @EmailConfirmed, @PersonTypeCode, @InvitationDtm, @PasswordHash,
+                     @AdminNo OUTPUT;
             END
 
         INSERT INTO PersonAdminRole (AdminNo, AdminRoleCode) VALUES (@AdminNo, @AdminRoleCode);

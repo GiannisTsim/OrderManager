@@ -49,7 +49,7 @@ CREATE PROCEDURE RetailerBranch_Add_tr
 (
     @RetailerNo RetailerNo,
     @Name       BranchName,
-    @BranchNo   BranchNo OUTPUT
+    @BranchNo   BranchNo = NULL OUTPUT
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);

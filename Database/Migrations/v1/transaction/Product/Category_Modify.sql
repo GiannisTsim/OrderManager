@@ -65,14 +65,11 @@ GO
 CREATE PROCEDURE Category_Modify_tr
 (
     @CategoryNo       CategoryNo,
-    @ParentCategoryNo CategoryNo,
-    @Name             CategoryName
+    @Name             CategoryName,
+    @ParentCategoryNo CategoryNo = 0
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
-
-    -- Set parent category to anchor when null
-    SET @ParentCategoryNo = COALESCE(@ParentCategoryNo, 0);
 
     ----------------------
     -- Validation block --

@@ -1,12 +1,11 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${author}:Manufacturer_Add_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Retailer_Add_vtr
+CREATE PROCEDURE Manufacturer_Add_vtr
 (
-    @VatId VatId,
-    @Name  RetailerName
+    @Name ManufacturerName
 ) AS
 BEGIN
     -- Error state initialization --
@@ -18,37 +17,55 @@ BEGIN
     IF EXISTS
         (
             SELECT 1
-            FROM Retailer
-            WHERE VatId = @VatId
-        )
-        BEGIN
-            RAISERROR (52103, -1, @State, @VatId);
-        END
-    IF EXISTS
-        (
-            SELECT 1
-            FROM Retailer
+            FROM Manufacturer
             WHERE Name = @Name
         )
         BEGIN
-            RAISERROR (52104, -1, @State, @Name);
+            RAISERROR (53202, -1, @State, @Name);
         END
 
     -- Validation successful--
     RETURN 0;
 END
 GO
--- rollback DROP PROCEDURE Retailer_Add_vtr;
+-- rollback DROP PROCEDURE Manufacturer_Add_vtr;
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer_Add_tr stripComments:false endDelimiter:GO
+-- changeset ${author}:Manufacturer_Add_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Retailer_Add_tr
+CREATE PROCEDURE Manufacturer_Add_utr
 (
-    @VatId      VatId,
-    @Name       RetailerName,
-    @RetailerNo RetailerNo = NULL OUTPUT
+    @Name           ManufacturerName,
+    @ManufacturerNo ManufacturerNo = NULL OUTPUT
+) AS
+BEGIN
+    -- Utility transaction integrity check --
+    EXEC XactUtil_Integrity_Check;
+
+    -- Database updates --
+    SET @ManufacturerNo = COALESCE((
+                                       SELECT MAX(ManufacturerNo) + 1
+                                       FROM Manufacturer
+                                   ), 1);
+
+    INSERT INTO Manufacturer (ManufacturerNo, Name)
+    VALUES (@ManufacturerNo, @Name);
+
+    -- Database updates successful --
+    RETURN 0;
+END
+GO
+-- rollback DROP PROCEDURE Manufacturer_Add_utr;
+
+
+-- ------------------------------------------------------------------------------------------------------------------ --
+-- changeset ${author}:Manufacturer_Add_tr stripComments:false endDelimiter:GO
+-- ------------------------------------------------------------------------------------------------------------------ --
+CREATE PROCEDURE Manufacturer_Add_tr
+(
+    @Name           ManufacturerName,
+    @ManufacturerNo ManufacturerNo = NULL OUTPUT
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
@@ -60,18 +77,14 @@ BEGIN
     EXEC Xact_Integrity_Check;
 
     -- Parameter checks --
-    IF @VatId IS NULL
-        BEGIN
-            RAISERROR (52101, -1 , 1);
-        END
     IF @Name IS NULL
         BEGIN
-            RAISERROR (52102, -1 , 1);
+            RAISERROR (53201, -1, 1);
         END
 
     -- Offline constraint validation (no locks held) --
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Retailer_Add_vtr @VatId, @Name;
+    EXEC Manufacturer_Add_vtr @Name;
 
     -------------------
     -- Execute block --
@@ -81,15 +94,10 @@ BEGIN
         SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
         -- Online constraint validation (holding locks) --
-        EXEC Retailer_Add_vtr @VatId, @Name;
+        EXEC Manufacturer_Add_vtr @Name;
 
         -- Database updates --
-        SET @RetailerNo = (
-                              SELECT COALESCE(MAX(RetailerNo) + 1, 1)
-                              FROM Retailer
-        );
-        INSERT INTO Retailer (RetailerNo, VatId, Name, UpdatedDtm, IsObsolete)
-        VALUES (@RetailerNo, @VatId, @Name, SYSDATETIMEOFFSET(), 0);
+        EXEC Manufacturer_Add_utr @Name, @ManufacturerNo OUTPUT;
 
         -- Commit --
         COMMIT TRANSACTION @ProcName;
@@ -101,4 +109,4 @@ BEGIN
     END CATCH
 END
 GO
--- rollback DROP PROCEDURE Retailer_Add_tr;
+-- rollback DROP PROCEDURE Manufacturer_Add_tr;

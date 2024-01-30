@@ -1,12 +1,13 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${author}:ProductOffering_Restore_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Retailer_Add_vtr
+CREATE PROCEDURE ProductOffering_Restore_vtr
 (
-    @VatId VatId,
-    @Name  RetailerName
+    @ProductCode ProductCode,
+    @OfferingNo  OfferingNo,
+    @UpdatedDtm  _CurrencyDtm
 ) AS
 BEGIN
     -- Error state initialization --
@@ -15,40 +16,37 @@ BEGIN
                              END;
 
     -- Validation checks --
-    IF EXISTS
-        (
-            SELECT 1
-            FROM Retailer
-            WHERE VatId = @VatId
-        )
+    DECLARE @CurrentUpdatedDtm _CurrencyDtm;
+    SELECT @CurrentUpdatedDtm = UpdatedDtm
+    FROM ProductOffering
+    WHERE ProductCode = @ProductCode
+      AND OfferingNo = @OfferingNo;
+
+    IF @@ROWCOUNT = 0
         BEGIN
-            RAISERROR (52103, -1, @State, @VatId);
+            RAISERROR (53510, -1, @State, @ProductCode, @OfferingNo);
         END
-    IF EXISTS
-        (
-            SELECT 1
-            FROM Retailer
-            WHERE Name = @Name
-        )
+    IF @CurrentUpdatedDtm != @UpdatedDtm
         BEGIN
-            RAISERROR (52104, -1, @State, @Name);
+            DECLARE @UpdatedDtmToString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
+            RAISERROR (53511, -1, @State, @ProductCode, @OfferingNo, @UpdatedDtmToString);
         END
 
     -- Validation successful--
     RETURN 0;
 END
 GO
--- rollback DROP PROCEDURE Retailer_Add_vtr;
+-- rollback DROP PROCEDURE ProductOffering_Restore_vtr;
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer_Add_tr stripComments:false endDelimiter:GO
+-- changeset ${author}:ProductOffering_Restore_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Retailer_Add_tr
+CREATE PROCEDURE ProductOffering_Restore_tr
 (
-    @VatId      VatId,
-    @Name       RetailerName,
-    @RetailerNo RetailerNo = NULL OUTPUT
+    @ProductCode ProductCode,
+    @OfferingNo  OfferingNo,
+    @UpdatedDtm  _CurrencyDtm
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
@@ -59,19 +57,9 @@ BEGIN
     -- Transaction integrity check --
     EXEC Xact_Integrity_Check;
 
-    -- Parameter checks --
-    IF @VatId IS NULL
-        BEGIN
-            RAISERROR (52101, -1 , 1);
-        END
-    IF @Name IS NULL
-        BEGIN
-            RAISERROR (52102, -1 , 1);
-        END
-
     -- Offline constraint validation (no locks held) --
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Retailer_Add_vtr @VatId, @Name;
+    EXEC ProductOffering_Restore_vtr @ProductCode, @OfferingNo, @UpdatedDtm;
 
     -------------------
     -- Execute block --
@@ -81,15 +69,15 @@ BEGIN
         SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
         -- Online constraint validation (holding locks) --
-        EXEC Retailer_Add_vtr @VatId, @Name;
+        EXEC ProductOffering_Restore_vtr @ProductCode, @OfferingNo, @UpdatedDtm;
 
         -- Database updates --
-        SET @RetailerNo = (
-                              SELECT COALESCE(MAX(RetailerNo) + 1, 1)
-                              FROM Retailer
-        );
-        INSERT INTO Retailer (RetailerNo, VatId, Name, UpdatedDtm, IsObsolete)
-        VALUES (@RetailerNo, @VatId, @Name, SYSDATETIMEOFFSET(), 0);
+        UPDATE ProductOffering
+        SET IsObsolete = 0,
+            UpdatedDtm = SYSDATETIMEOFFSET()
+        WHERE ProductCode = @ProductCode
+          AND OfferingNo = @OfferingNo
+          AND UpdatedDtm = @UpdatedDtm;
 
         -- Commit --
         COMMIT TRANSACTION @ProcName;
@@ -101,4 +89,4 @@ BEGIN
     END CATCH
 END
 GO
--- rollback DROP PROCEDURE Retailer_Add_tr;
+-- rollback DROP PROCEDURE ProductOffering_Restore_tr;

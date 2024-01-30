@@ -17,9 +17,7 @@ BEGIN
 
     -- Validation checks --
     DECLARE @CurrentUpdatedDtm _CurrencyDtm;
-    SELECT @CurrentUpdatedDtm = UpdatedDtm
-    FROM Person
-    WHERE PersonNo = @PersonNo;
+    SELECT @CurrentUpdatedDtm = UpdatedDtm FROM Person WHERE PersonNo = @PersonNo;
 
     IF @@ROWCOUNT = 0
         BEGIN
@@ -58,8 +56,8 @@ CREATE PROCEDURE Person_Modify_tr
     @Email          Email,
     @EmailConfirmed _Bool,
     @PersonTypeCode PersonTypeCode,
-    @InvitationDtm  _Dtm,
-    @PasswordHash   _Text
+    @InvitationDtm  _Dtm = NULL,
+    @PasswordHash   _Text = NULL
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
@@ -111,64 +109,34 @@ BEGIN
         EXEC Person_Modify_vtr @PersonNo, @UpdatedDtm, @Email;
 
         -- Database updates --
-        IF @PersonTypeCode = 'U'
-            BEGIN
-                IF EXISTS
-                    (
-                        SELECT 1
-                        FROM Person
-                        INNER JOIN Person_Invitee
-                        ON PersonNo = InviteeNo
-                        WHERE PersonNo = @PersonNo
-                          AND UpdatedDtm = @UpdatedDtm
-                    )
-                    BEGIN
-                        DELETE FROM Person_Invitee WHERE InviteeNo = @PersonNo;
-                        INSERT INTO Person_User (UserNo, PasswordHash) VALUES (@PersonNo, @PasswordHash);
-                    END
-                ELSE
-                    IF EXISTS
-                        (
-                            SELECT 1
-                            FROM Person
-                            INNER JOIN Person_User
-                            ON PersonNo = UserNo
-                            WHERE PersonNo = @PersonNo
-                              AND UpdatedDtm = @UpdatedDtm
-                        )
-                        BEGIN
-                            UPDATE Person_User SET PasswordHash = @PasswordHash WHERE UserNo = @PersonNo;
-                        END
-            END
+        DECLARE @PreviousPersonTypeCode PersonTypeCode = (
+                                                             SELECT PersonTypeCode
+                                                             FROM Person
+                                                             WHERE PersonNo = @PersonNo
+                                                               AND UpdatedDtm = @UpdatedDtm
+        );
 
-        IF @PersonTypeCode = 'I'
+
+        IF @PersonTypeCode = 'U' AND @PreviousPersonTypeCode = 'I'
             BEGIN
-                IF EXISTS
-                    (
-                        SELECT 1
-                        FROM Person
-                        INNER JOIN Person_User
-                        ON PersonNo = UserNo
-                        WHERE PersonNo = @PersonNo
-                          AND UpdatedDtm = @UpdatedDtm
-                    )
-                    BEGIN
-                        DELETE FROM Person_User WHERE UserNo = @PersonNo;
-                        INSERT INTO Person_Invitee (InviteeNo, InvitationDtm) VALUES (@PersonNo, @InvitationDtm);
-                    END
-                ELSE
-                    IF EXISTS
-                        (
-                            SELECT 1
-                            FROM Person
-                            INNER JOIN Person_Invitee
-                            ON PersonNo = InviteeNo
-                            WHERE PersonNo = @PersonNo
-                              AND UpdatedDtm = @UpdatedDtm
-                        )
-                        BEGIN
-                            UPDATE Person_Invitee SET InvitationDtm = @InvitationDtm WHERE InviteeNo = @PersonNo;
-                        END
+                DELETE FROM Person_Invitee WHERE InviteeNo = @PersonNo;
+                INSERT INTO Person_User (UserNo, PasswordHash) VALUES (@PersonNo, @PasswordHash);
+            END
+        ELSE IF @PersonTypeCode = 'U' AND @PreviousPersonTypeCode = 'U'
+            BEGIN
+                UPDATE Person_User SET PasswordHash = @PasswordHash WHERE UserNo = @PersonNo;
+            END
+        ELSE IF @PersonTypeCode = 'I' AND @PreviousPersonTypeCode = 'U'
+            BEGIN
+                DELETE FROM Person_User WHERE UserNo = @PersonNo;
+                INSERT INTO Person_Invitee (InviteeNo, InvitationDtm)
+                VALUES (@PersonNo, @InvitationDtm);
+            END
+        ELSE IF @PersonTypeCode = 'I' AND @PreviousPersonTypeCode = 'I'
+            BEGIN
+                UPDATE Person_Invitee
+                SET InvitationDtm = @InvitationDtm
+                WHERE InviteeNo = @PersonNo;
             END
 
         UPDATE Person
@@ -181,8 +149,7 @@ BEGIN
         -- Commit --
         COMMIT TRANSACTION @ProcName;
         RETURN 0;
-    END TRY
-    BEGIN CATCH
+    END TRY BEGIN CATCH
         ROLLBACK TRANSACTION @ProcName;
         THROW;
     END CATCH

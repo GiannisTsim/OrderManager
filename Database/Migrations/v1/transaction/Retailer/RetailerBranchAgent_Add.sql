@@ -19,28 +19,18 @@ BEGIN
     -- Validation checks --
     IF @AgentNo IS NULL
         BEGIN
-            IF EXISTS
-                (
-                    SELECT 1
-                    FROM Person
-                    WHERE Email = @Email
-                )
-                BEGIN
-                    RAISERROR (51107, -1, @State, @Email);
-                END
+            EXEC Person_Add_vtr @Email;
         END
-    ELSE
+    ELSE IF NOT EXISTS
+        (
+            SELECT 1
+            FROM Person
+            WHERE PersonNo = @AgentNo
+        )
         BEGIN
-            IF NOT EXISTS
-                (
-                    SELECT 1
-                    FROM Person
-                    WHERE PersonNo = @AgentNo
-                )
-                BEGIN
-                    RAISERROR (51108, -1, @State, @AgentNo);
-                END
+            RAISERROR (51108, -1, @State, @AgentNo);
         END
+
     IF NOT EXISTS
         (
             SELECT 1 FROM RetailerBranch WHERE RetailerNo = @RetailerNo AND BranchNo = @BranchNo
@@ -48,6 +38,7 @@ BEGIN
         BEGIN
             RAISERROR (52203, -1, @State, @RetailerNo, @BranchNo);
         END
+
     IF EXISTS
         (
             SELECT 1
@@ -74,12 +65,12 @@ CREATE PROCEDURE RetailerBranchAgent_Add_tr
 (
     @RetailerNo     RetailerNo,
     @BranchNo       BranchNo,
-    @AgentNo        PersonNo OUTPUT,
-    @Email          Email,
-    @EmailConfirmed _Bool,
-    @PersonTypeCode PersonTypeCode,
-    @InvitationDtm  _Dtm,
-    @PasswordHash   _Text
+    @AgentNo        PersonNo = NULL OUTPUT,
+    @Email          Email = NULL,
+    @EmailConfirmed _Bool = NULL,
+    @PersonTypeCode PersonTypeCode = NULL,
+    @InvitationDtm  _Dtm = NULL,
+    @PasswordHash   _Text = NULL
 ) AS
 BEGIN
     DECLARE @ProcName SYSNAME = OBJECT_NAME(@@PROCID);
@@ -136,22 +127,8 @@ BEGIN
         -- Database updates --
         IF @AgentNo IS NULL
             BEGIN
-                EXEC Person_Add_utr @AgentNo, @Email, @EmailConfirmed, @PersonTypeCode, @InvitationDtm, @PasswordHash;
-                --                 SET @AgentNo = COALESCE((
-                --                                              SELECT MAX(PersonNo) + 1
-                --                                              FROM Person
-                --                                          ), 1);
-                -- 
-                --                 INSERT INTO Person(PersonNo, Email, EmailConfirmed, UpdatedDtm, IsObsolete, PersonTypeCode)
-                --                 VALUES (@AgentNo, @Email, @EmailConfirmed, SYSDATETIMEOFFSET(), 0, @PersonTypeCode);
-                --                 IF @PersonTypeCode = 'I'
-                --                     BEGIN
-                --                         INSERT INTO Person_Invitee (InviteeNo, InvitationDtm) VALUES (@AgentNo, @InvitationDtm);
-                --                     END
-                --                 ELSE -- IF @PersonTypeCode = 'U'
-                --                     BEGIN
-                --                         INSERT INTO Person_User (UserNo, PasswordHash) VALUES (@AgentNo, @PasswordHash);
-                --                     END
+                EXEC Person_Add_utr @Email, @EmailConfirmed, @PersonTypeCode, @InvitationDtm, @PasswordHash,
+                     @AgentNo OUTPUT;
             END
 
         INSERT INTO RetailerBranchAgent (RetailerNo, BranchNo, AgentNo, UpdatedDtm, IsObsolete)

@@ -113,9 +113,9 @@ VALUES ('U', 'Unit'),
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE BundleType
 (
-    BundleTypeCode BundleTypeCode NOT NULL,
-    Name           BundleTypeName NOT NULL,
-    CONSTRAINT UC_BundleType_PK PRIMARY KEY (BundleTypeCode),
+    BundleTypeNo BundleTypeNo   NOT NULL,
+    Name         BundleTypeName NOT NULL,
+    CONSTRAINT UC_BundleType_PK PRIMARY KEY (BundleTypeNo),
     CONSTRAINT U__BundleType_AK UNIQUE (Name)
 );
 -- rollback DROP TABLE BundleType;
@@ -160,12 +160,12 @@ CREATE TABLE ProductOffering_Bundle
     ProductCode       ProductCode     NOT NULL,
     OfferingNo_Bundle OfferingNo      NOT NULL,
     UnitCount         BundleUnitCount NOT NULL,
-    BundleTypeCode    BundleTypeCode  NOT NULL,
+    BundleTypeNo      BundleTypeNo    NOT NULL,
     CONSTRAINT UC_ProductOfferingBundle_PK PRIMARY KEY (ProductCode, OfferingNo_Bundle),
     CONSTRAINT U__ProductOfferingBundle_AK1 UNIQUE (ProductCode, UnitCount),
-    CONSTRAINT U__ProductOfferingBundle_AK2 UNIQUE (ProductCode, BundleTypeCode),
+    CONSTRAINT U__ProductOfferingBundle_AK2 UNIQUE (ProductCode, BundleTypeNo),
     CONSTRAINT ProductOffering_Is_ProductOfferingBundle_fk FOREIGN KEY (ProductCode, OfferingNo_Bundle) REFERENCES ProductOffering (ProductCode, OfferingNo),
-    CONSTRAINT BundleType_Describes_ProductOfferingBundle_fk FOREIGN KEY (BundleTypeCode) REFERENCES BundleType (BundleTypeCode),
+    CONSTRAINT BundleType_Describes_ProductOfferingBundle_fk FOREIGN KEY (BundleTypeNo) REFERENCES BundleType (BundleTypeNo),
     CONSTRAINT ProductOfferingBundle_UnitCount_GT_0_ck CHECK (UnitCount > 0)
 );
 -- rollback DROP TABLE ProductOffering_Bundle;

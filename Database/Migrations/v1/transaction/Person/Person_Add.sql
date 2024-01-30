@@ -1,16 +1,46 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
+-- changeset ${author}:Person_Add_vtr stripComments:false endDelimiter:GO
+-- ------------------------------------------------------------------------------------------------------------------ --
+CREATE PROCEDURE Person_Add_vtr
+(
+    @Email Email
+) AS
+BEGIN
+    -- Error state initialization --
+    DECLARE @State TINYINT = CASE WHEN @@TRANCOUNT = 0 THEN 1
+                                  ELSE 2
+                             END;
+
+    -- Validation checks --
+    IF EXISTS
+        (
+            SELECT 1
+            FROM Person
+            WHERE Email = @Email
+        )
+        BEGIN
+            RAISERROR (51107, -1, @State, @Email);
+        END
+
+    -- Validation successful--
+    RETURN 0;
+END
+GO
+-- rollback DROP PROCEDURE Person_Add_vtr;
+
+-- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${author}:Person_Add_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Person_Add_utr
 (
-    @PersonNo       PersonNo OUTPUT,
     @Email          Email,
     @EmailConfirmed _Bool,
     @PersonTypeCode PersonTypeCode,
-    @InvitationDtm  _Dtm,
-    @PasswordHash   _Text
+    @InvitationDtm  _Dtm = NULL,
+    @PasswordHash   _Text = NULL,
+    @PersonNo       PersonNo = NULL OUTPUT
 ) AS
 BEGIN
     -- Utility transaction integrity check --
@@ -24,11 +54,12 @@ BEGIN
 
     INSERT INTO Person(PersonNo, Email, EmailConfirmed, UpdatedDtm, IsObsolete, PersonTypeCode)
     VALUES (@PersonNo, @Email, @EmailConfirmed, SYSDATETIMEOFFSET(), 0, @PersonTypeCode);
+
     IF @PersonTypeCode = 'I'
         BEGIN
             INSERT INTO Person_Invitee (InviteeNo, InvitationDtm) VALUES (@PersonNo, @InvitationDtm);
         END
-    ELSE -- IF @PersonTypeCode = 'U'
+    ELSE IF @PersonTypeCode = 'U'
         BEGIN
             INSERT INTO Person_User (UserNo, PasswordHash) VALUES (@PersonNo, @PasswordHash);
         END

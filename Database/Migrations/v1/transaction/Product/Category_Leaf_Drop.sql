@@ -1,9 +1,9 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Drop_vtr stripComments:false endDelimiter:GO
+-- changeset ${author}:Category_Leaf_Drop_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Category_Drop_vtr
+CREATE PROCEDURE Category_Leaf_Drop_vtr
 (
     @CategoryNo CategoryNo
 ) AS
@@ -41,13 +41,13 @@ BEGIN
     RETURN 0;
 END
 GO
--- rollback DROP PROCEDURE Category_Drop_vtr;
+-- rollback DROP PROCEDURE Category_Leaf_Drop_vtr;
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Drop_tr stripComments:false endDelimiter:GO
+-- changeset ${author}:Category_Leaf_Drop_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE PROCEDURE Category_Drop_tr
+CREATE PROCEDURE Category_Leaf_Drop_tr
 (
     @CategoryNo CategoryNo
 ) AS
@@ -62,7 +62,7 @@ BEGIN
 
     -- Offline constraint validation (no locks held) --
     SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Category_Drop_vtr @CategoryNo;
+    EXEC Category_Leaf_Drop_vtr @CategoryNo;
 
     -------------------
     -- Execute block --
@@ -72,7 +72,7 @@ BEGIN
         SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
         -- Online constraint validation (holding locks) --
-        EXEC Category_Drop_vtr @CategoryNo;
+        EXEC Category_Leaf_Drop_vtr @CategoryNo;
 
         -- Database updates --
         DECLARE @ParentCategoryNo CategoryNo;
@@ -81,7 +81,7 @@ BEGIN
         WHERE CategoryNo = @CategoryNo;
 
         DELETE FROM Category_Leaf WHERE CategoryNo_Leaf = @CategoryNo;
-        DELETE FROM Category WHERE CategoryNo = @CategoryNo;
+        DELETE FROM Category WHERE CategoryNo = @CategoryNo AND NodeTypeCode = 'L';
 
         -- Modify parent category to leaf if it has no more subcategories (and it is not the anchor)
         IF @ParentCategoryNo != 0 AND
@@ -106,4 +106,4 @@ BEGIN
     END CATCH
 END
 GO
--- rollback DROP PROCEDURE Category_Drop_tr;
+-- rollback DROP PROCEDURE Category_Leaf_Drop_tr;
