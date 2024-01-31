@@ -9,5 +9,6 @@
     <include file="Person.sql" relativeToChangelogFile="true"/>
     <include file="Retailer.sql" relativeToChangelogFile="true"/>
     <include file="Product.sql" relativeToChangelogFile="true"/>
+    <include file="Itinerary.sql" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

@@ -10,5 +10,6 @@
     <!--<includeAll path="Person.test" relativeToChangelogFile="true" contextFilter="@dev"/>-->
     <includeAll path="Retailer" relativeToChangelogFile="true"/>
     <includeAll path="Product" relativeToChangelogFile="true"/>
+    <includeAll path="Itinerary" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
