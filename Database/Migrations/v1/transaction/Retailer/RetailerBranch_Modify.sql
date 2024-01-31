@@ -29,8 +29,8 @@ BEGIN
         END
     IF @CurrentUpdatedDtm != @UpdatedDtm
         BEGIN
-            DECLARE @UpdatedDtmToString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
-            RAISERROR (52204, -1, @State, @RetailerNo, @BranchNo, @UpdatedDtmToString);
+            DECLARE @UpdatedDtmString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
+            RAISERROR (52204, -1, @State, @RetailerNo, @BranchNo, @UpdatedDtmString);
         END
     IF EXISTS
         (

@@ -30,8 +30,8 @@ BEGIN
         END
     IF @CurrentUpdatedDtm != @UpdatedDtm
         BEGIN
-            DECLARE @UpdatedDtmToString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
-            RAISERROR (52303, -1, @State, @RetailerNo, @BranchNo, @AgentNo, @UpdatedDtmToString);
+            DECLARE @UpdatedDtmString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
+            RAISERROR (52303, -1, @State, @RetailerNo, @BranchNo, @AgentNo, @UpdatedDtmString);
         END
 
     -- Validation successful--

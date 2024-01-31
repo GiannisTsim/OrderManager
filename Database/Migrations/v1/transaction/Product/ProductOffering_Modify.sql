@@ -32,8 +32,8 @@ BEGIN
         END
     IF @CurrentUpdatedDtm != @UpdatedDtm
         BEGIN
-            DECLARE @UpdatedDtmToString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
-            RAISERROR (53511, -1, @State, @ProductCode, @OfferingNo, @UpdatedDtmToString);
+            DECLARE @UpdatedDtmString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
+            RAISERROR (53511, -1, @State, @ProductCode, @OfferingNo, @UpdatedDtmString);
         END
 
     IF @OfferingTypeCode = 'U'
