@@ -12,7 +12,7 @@ CREATE TABLE OrderType
 );
 INSERT INTO OrderType (OrderTypeCode, Name)
 VALUES ('C', 'Cart'),
-       ('F', 'Final');
+       ('S', 'Submit');
 -- rollback DROP TABLE OrderType;
 
 
@@ -26,6 +26,10 @@ CREATE TABLE OrderStatus
     CONSTRAINT UC_OrderStatus_PK PRIMARY KEY CLUSTERED (OrderStatusCode),
     CONSTRAINT U__OrderStatus_AK UNIQUE (Name),
 );
+INSERT INTO OrderStatus (OrderStatusCode, Name)
+VALUES ('P', 'Pending'),
+       ('C', 'Complete'),
+       ('X', 'Cancelled');
 -- rollback DROP TABLE OrderStatus;
 
 
@@ -64,22 +68,22 @@ CREATE TABLE Order_Cart
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order_Final stripComments:false
+-- changeset ${author}:Order_Submit stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-CREATE TABLE Order_Final
+CREATE TABLE Order_Submit
 (
     RetailerNo      RetailerNo      NOT NULL,
     BranchNo        BranchNo        NOT NULL,
     AgentNo         PersonNo        NOT NULL,
-    OrderNo_Final   OrderNo         NOT NULL,
+    OrderNo_Submit  OrderNo         NOT NULL,
     OrderDtm        OrderDtm        NOT NULL,
     OrderStatusCode OrderStatusCode NOT NULL,
-    CONSTRAINT UC_OrderFinal_PK PRIMARY KEY CLUSTERED (RetailerNo, BranchNo, AgentNo, OrderNo_Final),
-    CONSTRAINT UC_OrderFinal_AK UNIQUE (RetailerNo, BranchNo, AgentNo, OrderDtm),
-    CONSTRAINT Order_Is_OrderFinal_fk FOREIGN KEY (RetailerNo, BranchNo, AgentNo, OrderNo_Final) REFERENCES [Order] (RetailerNo, BranchNo, AgentNo, OrderNo),
-    CONSTRAINT OrderStatus_Classifies_OrderFinal_fk FOREIGN KEY (OrderStatusCode) REFERENCES OrderStatus (OrderStatusCode)
+    CONSTRAINT UC_OrderSubmit_PK PRIMARY KEY CLUSTERED (RetailerNo, BranchNo, AgentNo, OrderNo_Submit),
+    CONSTRAINT UC_OrderSubmit_AK UNIQUE (RetailerNo, BranchNo, AgentNo, OrderDtm),
+    CONSTRAINT Order_Is_OrderSubmit_fk FOREIGN KEY (RetailerNo, BranchNo, AgentNo, OrderNo_Submit) REFERENCES [Order] (RetailerNo, BranchNo, AgentNo, OrderNo),
+    CONSTRAINT OrderStatus_Classifies_OrderSubmit_fk FOREIGN KEY (OrderStatusCode) REFERENCES OrderStatus (OrderStatusCode)
 );
--- rollback DROP TABLE Order_Final;
+-- rollback DROP TABLE Order_Submit;
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
@@ -93,7 +97,7 @@ CREATE TABLE OrderItem
     OrderNo     OrderNo     NOT NULL,
     ProductCode ProductCode NOT NULL,
     OfferingNo  OfferingNo  NOT NULL,
-    Quantity    _IntTiny    NOT NULL,
+    Quantity    _IntSmall   NOT NULL,
     CONSTRAINT UC_OrderItem_PK PRIMARY KEY CLUSTERED (RetailerNo, BranchNo, AgentNo, OrderNo, ProductCode, OfferingNo),
     CONSTRAINT Order_Comprises_OrderItem_fk FOREIGN KEY (RetailerNo, BranchNo, AgentNo, OrderNo) REFERENCES [Order] (RetailerNo, BranchNo, AgentNo, OrderNo),
     CONSTRAINT ProductOffering_IsPurchasedIn_OrderItem_fk FOREIGN KEY (ProductCode, OfferingNo) REFERENCES ProductOffering (ProductCode, OfferingNo),

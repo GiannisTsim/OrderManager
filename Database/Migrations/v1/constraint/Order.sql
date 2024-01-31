@@ -13,12 +13,12 @@ ALTER TABLE Order_Cart
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderFinal_IsExclusive_ck stripComments:false
+-- changeset ${author}:OrderSubmit_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-ALTER TABLE Order_Final
-    ADD CONSTRAINT OrderFinal_IsExclusive_ck CHECK (dbo.Order_ValidateExclusive_fn(RetailerNo,
-                                                                                   BranchNo,
-                                                                                   AgentNo,
-                                                                                   OrderNo_Final,
-                                                                                   'F') = 1);
--- rollback ALTER TABLE Order_Final DROP CONSTRAINT OrderFinal_IsExclusive_ck;
+ALTER TABLE Order_Submit
+    ADD CONSTRAINT OrderSubmit_IsExclusive_ck CHECK (dbo.Order_ValidateExclusive_fn(RetailerNo,
+                                                                                    BranchNo,
+                                                                                    AgentNo,
+                                                                                    OrderNo_Submit,
+                                                                                    'S') = 1);
+-- rollback ALTER TABLE Order_Submit DROP CONSTRAINT OrderSubmit_IsExclusive_ck;

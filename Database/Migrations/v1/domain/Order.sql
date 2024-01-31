@@ -5,7 +5,7 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE OrderTypeCode FROM CHAR(1);
 CREATE TYPE OrderTypeName FROM NVARCHAR(256);
-CREATE TYPE OrderStatusCode FROM CHAR(4);
+CREATE TYPE OrderStatusCode FROM CHAR(1);
 CREATE TYPE OrderStatusName FROM NVARCHAR(256);
 CREATE TYPE OrderNo FROM INT;
 CREATE TYPE OrderDtm FROM DATETIMEOFFSET(0);

@@ -11,5 +11,6 @@
     <includeAll path="Retailer" relativeToChangelogFile="true"/>
     <includeAll path="Product" relativeToChangelogFile="true"/>
     <includeAll path="Itinerary" relativeToChangelogFile="true"/>
+    <includeAll path="Order" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>
