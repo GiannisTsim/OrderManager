@@ -1,6 +1,6 @@
-namespace OrderManager.Infrastructure.Constants;
+namespace OrderManager.Infrastructure.SqlServer.Constants;
 
-public static class SqlApplicationErrorCodes
+public static class SqlErrorCodes
 {
     public const int RetailerDuplicateVatId = 50203;
     public const int RetailerDuplicateName = 50204;

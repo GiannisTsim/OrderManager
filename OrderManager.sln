@@ -6,6 +6,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Core", "Core\Core.csproj", 
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "MvcApp", "MvcApp\MvcApp.csproj", "{820049F2-5C40-4037-B7B9-D2934A61A533}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure.SqlServer", "Infrastructure.SqlServer\Infrastructure.SqlServer.csproj", "{2B5841FB-75AA-419A-B2CF-868E983788F0}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -24,6 +26,10 @@ Global
 		{820049F2-5C40-4037-B7B9-D2934A61A533}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{820049F2-5C40-4037-B7B9-D2934A61A533}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{820049F2-5C40-4037-B7B9-D2934A61A533}.Release|Any CPU.Build.0 = Release|Any CPU
+		{2B5841FB-75AA-419A-B2CF-868E983788F0}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{2B5841FB-75AA-419A-B2CF-868E983788F0}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{2B5841FB-75AA-419A-B2CF-868E983788F0}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{2B5841FB-75AA-419A-B2CF-868E983788F0}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(NestedProjects) = preSolution
 	EndGlobalSection

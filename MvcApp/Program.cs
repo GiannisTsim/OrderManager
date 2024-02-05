@@ -1,6 +1,7 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.ViewFeatures;
 using OrderManager.Infrastructure.DependencyInjection;
+using OrderManager.Infrastructure.SqlServer.DependencyInjection;
 using OrderManager.MvcApp.Utilities;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -16,6 +17,7 @@ builder.Services.AddControllersWithViews
 // Configure custom html generator to override validation css classnames
 builder.Services.AddSingleton<IHtmlGenerator, BootstrapValidationHtmlGenerator>();
 
+builder.Services.AddServices();
 builder.Services.AddRepositories();
 
 var app = builder.Build();

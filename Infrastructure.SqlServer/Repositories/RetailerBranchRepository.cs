@@ -1,11 +1,10 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using OrderManager.Core.Abstractions;
 using OrderManager.Core.Abstractions.Repositories;
 using OrderManager.Core.Models.RetailerBranch;
 
-namespace OrderManager.Infrastructure.Repositories;
+namespace OrderManager.Infrastructure.SqlServer.Repositories;
 
 public class RetailerBranchRepository : IRetailerBranchRepository
 {

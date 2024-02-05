@@ -2,13 +2,12 @@ using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using OrderManager.Core.Abstractions;
 using OrderManager.Core.Abstractions.Repositories;
 using OrderManager.Core.Exceptions.Retailer;
 using OrderManager.Core.Models.Retailer;
-using OrderManager.Infrastructure.Constants;
+using OrderManager.Infrastructure.SqlServer.Constants;
 
-namespace OrderManager.Infrastructure.Repositories;
+namespace OrderManager.Infrastructure.SqlServer.Repositories;
 
 public class RetailerRepository : IRetailerRepository
 {
@@ -193,11 +192,11 @@ public class RetailerRepository : IRetailerRepository
             var retailerNo = p.Get<int>("@RetailerNo");
             return retailerNo;
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerDuplicateVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateVatId)
         {
             throw new RetailerDuplicateVatIdException(retailer.VatId, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerDuplicateName)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateName)
         {
             throw new RetailerDuplicateNameException(retailer.Name, ex);
         }
@@ -217,19 +216,19 @@ public class RetailerRepository : IRetailerRepository
                 commandType: CommandType.StoredProcedure
             );
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerNotFound)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
             throw new RetailerNotFoundException(retailer.RetailerNo, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerCurrencyLost)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
         {
             throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerDuplicateVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateVatId)
         {
             throw new RetailerDuplicateVatIdException(retailer.VatId, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerDuplicateName)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateName)
         {
             throw new RetailerDuplicateNameException(retailer.Name, ex);
         }
@@ -248,11 +247,11 @@ public class RetailerRepository : IRetailerRepository
                 commandType: CommandType.StoredProcedure
             );
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerNotFound)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
             throw new RetailerNotFoundException(retailer.RetailerNo, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlApplicationErrorCodes.RetailerCurrencyLost)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
         {
             throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
         }
