@@ -70,6 +70,12 @@ CREATE TABLE AdminRole
     CONSTRAINT UC_AdminRole_PK PRIMARY KEY CLUSTERED (AdminRoleCode),
     CONSTRAINT U__AdminRole_AK UNIQUE (Name)
 );
+INSERT INTO AdminRole (AdminRoleCode, Name)
+VALUES ('prs', 'Person admin'),
+       ('rtl', 'Retailer admin'),
+       ('prd', 'Product admin'),
+       ('ord', 'Order admin'),
+       ('itn', 'Itinerary admin');
 -- rollback DROP TABLE AdminRole;
 
 

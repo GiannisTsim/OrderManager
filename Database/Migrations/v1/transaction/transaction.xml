@@ -7,7 +7,6 @@
 
     <includeAll path="_Generic" relativeToChangelogFile="true"/>
     <includeAll path="Person" relativeToChangelogFile="true"/>
-    <!--<includeAll path="Person.test" relativeToChangelogFile="true" contextFilter="@dev"/>-->
     <includeAll path="Retailer" relativeToChangelogFile="true"/>
     <includeAll path="Product" relativeToChangelogFile="true"/>
     <includeAll path="Itinerary" relativeToChangelogFile="true"/>

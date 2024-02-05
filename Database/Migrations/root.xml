@@ -8,9 +8,6 @@
     <!-- Conditionally add and initialize tSQLt -->
     <changeSet id="tSQLt" author="${author}" contextFilter="@dev">
         <sqlFile path="tSQLt_V1.0.8083.3529/tSQLt.class.sql" relativeToChangelogFile="true" endDelimiter="GO"/>
-        <sql>
-            EXEC tSQLt.NewTestClass 'OrderManagerTests';
-        </sql>
         <rollback>
             <sql>
                 EXEC tSQLt.Uninstall;
