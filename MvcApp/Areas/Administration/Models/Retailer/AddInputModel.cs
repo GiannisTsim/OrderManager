@@ -11,7 +11,7 @@ public record AddInputModel
     public required string? VatId { get; init; }
 
     [Required]
-    [Remote("ValidateFullName", "Retailer", HttpMethod = "Post")]
+    [Remote("ValidateName", "Retailer", HttpMethod = "Post")]
     [Display(Name = "Full name", Prompt = "Full name")]
     public required string? Name { get; init; }
 }
