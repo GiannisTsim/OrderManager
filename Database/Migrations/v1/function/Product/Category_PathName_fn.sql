@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_PathName_fn stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_PathName_fn stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE FUNCTION dbo.Category_PathName_fn
 (

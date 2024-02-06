@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person stripComments:false
+-- changeset ${AUTHOR}:Person stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 51101, 16, 'Person.Email cannot be null.';
 -- rollback EXEC sp_dropmessage 51101, 'all';
@@ -35,7 +35,7 @@ EXEC sp_addmessage 51110, 16,
 -- rollback EXEC sp_dropmessage 51110, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonAdminRole stripComments:false
+-- changeset ${AUTHOR}:PersonAdminRole stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 51201, 16, 'AdminRole[AdminRoleCode=''%s''] does not exist.';
 -- rollback EXEC sp_dropmessage 51201, 'all';

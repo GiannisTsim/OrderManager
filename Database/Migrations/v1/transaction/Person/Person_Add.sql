@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Person_Add_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Person_Add_vtr
 (
@@ -31,7 +31,7 @@ GO
 -- rollback DROP PROCEDURE Person_Add_vtr;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person_Add_utr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Person_Add_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Person_Add_utr
 (

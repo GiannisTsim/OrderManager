@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranchAgent_Obsolete_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:RetailerBranchAgent_Obsolete_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE RetailerBranchAgent_Obsolete_vtr
 (
@@ -42,7 +42,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranchAgent_Obsolete_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:RetailerBranchAgent_Obsolete_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE RetailerBranchAgent_Obsolete_tr
 (

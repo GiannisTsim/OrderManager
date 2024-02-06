@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Path_fn stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Path_fn stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE FUNCTION dbo.Category_Path_fn
 (
@@ -21,11 +21,11 @@ BEGIN
                           -- Else call recursively with parent category as input        
                           ELSE
                               dbo.Category_Path_fn
-                                  (
+                              (
                                       ParentCategoryNo,
                                       @Separator,
                                       CONCAT(@Separator, CategoryNo, @Path)
-                                  )
+                              )
                       END
                FROM Category
                WHERE CategoryNo = @CategoryNo

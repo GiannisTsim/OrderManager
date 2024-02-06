@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Obsolete_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Obsolete_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Obsolete_vtr
 (
@@ -38,7 +38,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Obsolete_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Obsolete_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Obsolete_tr
 (

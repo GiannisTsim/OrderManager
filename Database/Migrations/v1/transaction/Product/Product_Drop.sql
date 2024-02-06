@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Drop_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Drop_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Drop_vtr
 (
@@ -29,7 +29,7 @@ BEGIN
             DECLARE @UpdatedDtmString NVARCHAR(MAX) = CONVERT(NVARCHAR, @UpdatedDtm, 127);
             RAISERROR (53406, -1, @State, @ProductCode, @UpdatedDtmString);
         END
-        
+
     IF EXISTS
         (
             SELECT 1
@@ -48,7 +48,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Drop_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Drop_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Drop_tr
 (

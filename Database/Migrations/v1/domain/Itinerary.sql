@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Itinerary stripComments:false
+-- changeset ${AUTHOR}:Itinerary stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE ItineraryWeekday FROM TINYINT;
 CREATE TYPE ItineraryTime FROM TIME(0);

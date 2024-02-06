@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:NodeType stripComments:false
+-- changeset ${AUTHOR}:NodeType stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE NodeType
 (

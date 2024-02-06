@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer stripComments:false
+-- changeset ${AUTHOR}:Retailer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Retailer
 (
@@ -18,7 +18,7 @@ CREATE TABLE Retailer
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranch stripComments:false
+-- changeset ${AUTHOR}:RetailerBranch stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE RetailerBranch
 (
@@ -35,7 +35,7 @@ CREATE TABLE RetailerBranch
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranchAgent stripComments:false
+-- changeset ${AUTHOR}:RetailerBranchAgent stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE RetailerBranchAgent
 (

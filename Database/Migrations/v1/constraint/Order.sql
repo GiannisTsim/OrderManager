@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderCart_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:OrderCart_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE Order_Cart
     ADD CONSTRAINT OrderCart_IsExclusive_ck CHECK (dbo.Order_ValidateExclusive_fn(RetailerNo,
@@ -13,7 +13,7 @@ ALTER TABLE Order_Cart
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderSubmit_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:OrderSubmit_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE Order_Submit
     ADD CONSTRAINT OrderSubmit_IsExclusive_ck CHECK (dbo.Order_ValidateExclusive_fn(RetailerNo,

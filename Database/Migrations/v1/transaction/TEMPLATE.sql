@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:TEMPLATE_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:TEMPLATE_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE TEMPLATE_vtr
 (
@@ -22,7 +22,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:TEMPLATE_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:TEMPLATE_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE TEMPLATE_tr
 (

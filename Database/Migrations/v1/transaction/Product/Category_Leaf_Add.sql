@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Leaf_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Leaf_Add_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Leaf_Add_vtr
 (
@@ -49,7 +49,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Leaf_Add_utr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Leaf_Add_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Leaf_Add_utr
 (
@@ -91,7 +91,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Leaf_Add_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Leaf_Add_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Leaf_Add_tr
 (

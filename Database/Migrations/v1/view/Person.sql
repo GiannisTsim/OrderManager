@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person_V stripComments:false
+-- changeset ${AUTHOR}:Person_V stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW Person_V AS
 SELECT Person.PersonNo,

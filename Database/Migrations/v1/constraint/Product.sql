@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_NI_ParentPath_ck stripComments:false
+-- changeset ${AUTHOR}:Category_NI_ParentPath_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE Category
     WITH NOCHECK
@@ -13,7 +13,7 @@ ALTER TABLE Category
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:CategoryBranch_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:CategoryBranch_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE Category_Branch
     ADD CONSTRAINT CategoryBranch_IsExclusive_ck CHECK (dbo.Category_ValidateExclusive_fn(CategoryNo_Branch, 'B') = 1);
@@ -21,7 +21,7 @@ ALTER TABLE Category_Branch
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:CategoryLeaf_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:CategoryLeaf_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE Category_Leaf
     ADD CONSTRAINT CategoryLeaf_IsExclusive_ck CHECK (dbo.Category_ValidateExclusive_fn(CategoryNo_Leaf, 'L') = 1);
@@ -29,7 +29,7 @@ ALTER TABLE Category_Leaf
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOfferingUnit_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:ProductOfferingUnit_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE ProductOffering_Unit
     ADD CONSTRAINT ProductOfferingUnit_IsExclusive_ck CHECK (dbo.ProductOffering_ValidateExclusive_fn(ProductCode,
@@ -39,7 +39,7 @@ ALTER TABLE ProductOffering_Unit
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOfferingBundle_IsExclusive_ck stripComments:false
+-- changeset ${AUTHOR}:ProductOfferingBundle_IsExclusive_ck stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 ALTER TABLE ProductOffering_Bundle
     ADD CONSTRAINT ProductOfferingBundle_IsExclusive_ck CHECK (dbo.ProductOffering_ValidateExclusive_fn(ProductCode,

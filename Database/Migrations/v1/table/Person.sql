@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonType stripComments:false
+-- changeset ${AUTHOR}:PersonType stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE PersonType
 (
@@ -17,7 +17,7 @@ VALUES ('I', 'Invitee'),
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person stripComments:false
+-- changeset ${AUTHOR}:Person stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Person
 (
@@ -35,7 +35,7 @@ CREATE TABLE Person
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person_Invitee stripComments:false
+-- changeset ${AUTHOR}:Person_Invitee stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Person_Invitee
 (
@@ -48,7 +48,7 @@ CREATE TABLE Person_Invitee
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person_User stripComments:false
+-- changeset ${AUTHOR}:Person_User stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Person_User
 (
@@ -61,7 +61,7 @@ CREATE TABLE Person_User
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:AdminRole stripComments:false
+-- changeset ${AUTHOR}:AdminRole stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE AdminRole
 (
@@ -80,7 +80,7 @@ VALUES ('prs', 'Person admin'),
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonAdminRole stripComments:false
+-- changeset ${AUTHOR}:PersonAdminRole stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE PersonAdminRole
 (

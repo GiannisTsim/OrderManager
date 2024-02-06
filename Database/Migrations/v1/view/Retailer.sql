@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer_V stripComments:false
+-- changeset ${AUTHOR}:Retailer_V stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW Retailer_V AS
 SELECT RetailerNo,
@@ -19,7 +19,7 @@ FROM Retailer;
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranch_V stripComments:false
+-- changeset ${AUTHOR}:RetailerBranch_V stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW RetailerBranch_V AS
 SELECT RB.RetailerNo,

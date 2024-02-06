@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Itinerary_V stripComments:false
+-- changeset ${AUTHOR}:Itinerary_V stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW Itinerary_V AS
 SELECT DepartureWeekday,

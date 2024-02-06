@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Xact_Integrity_Check stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Xact_Integrity_Check stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Xact_Integrity_Check
 AS

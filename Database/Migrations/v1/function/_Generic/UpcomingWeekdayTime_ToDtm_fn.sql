@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:UpcomingWeekdayTime_ToDtm_fn stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:UpcomingWeekdayTime_ToDtm_fn stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE FUNCTION UpcomingWeekdayTime_ToDtm_fn
 (

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand_Modify_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ManufacturerBrand_Modify_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ManufacturerBrand_Modify_vtr
 (
@@ -46,7 +46,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand_Modify_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ManufacturerBrand_Modify_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ManufacturerBrand_Modify_tr
 (

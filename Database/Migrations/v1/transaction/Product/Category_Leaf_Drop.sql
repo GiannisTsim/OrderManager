@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Leaf_Drop_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Leaf_Drop_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Leaf_Drop_vtr
 (
@@ -45,7 +45,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Leaf_Drop_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Leaf_Drop_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Leaf_Drop_tr
 (

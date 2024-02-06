@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderType stripComments:false
+-- changeset ${AUTHOR}:OrderType stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE OrderType
 (
@@ -17,7 +17,7 @@ VALUES ('C', 'Cart'),
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderStatus stripComments:false
+-- changeset ${AUTHOR}:OrderStatus stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE OrderStatus
 (
@@ -34,7 +34,7 @@ VALUES ('P', 'Pending'),
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order stripComments:false
+-- changeset ${AUTHOR}:Order stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE [Order]
 (
@@ -52,7 +52,7 @@ CREATE TABLE [Order]
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order_Cart stripComments:false
+-- changeset ${AUTHOR}:Order_Cart stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Order_Cart
 (
@@ -68,7 +68,7 @@ CREATE TABLE Order_Cart
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order_Submit stripComments:false
+-- changeset ${AUTHOR}:Order_Submit stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Order_Submit
 (
@@ -87,7 +87,7 @@ CREATE TABLE Order_Submit
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem stripComments:false
+-- changeset ${AUTHOR}:OrderItem stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE OrderItem
 (

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_V stripComments:false
+-- changeset ${AUTHOR}:Category_V stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW Category_V AS
 SELECT CategoryNo,

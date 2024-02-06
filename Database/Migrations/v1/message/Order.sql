@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order stripComments:false
+-- changeset ${AUTHOR}:Order stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 55101, 16, 'Order_Cart[RetailerNo=%d,BranchNo=%d,AgentNo=%d,OrderNo_Cart=%d] does not exist.';
 -- rollback EXEC sp_dropmessage 55101, 'all';
@@ -11,7 +11,7 @@ EXEC sp_addmessage 55102, 16,
 -- rollback EXEC sp_dropmessage 55102, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem stripComments:false
+-- changeset ${AUTHOR}:OrderItem stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 55201, 16, 'OrderItem.Quantity cannot be null.';
 -- rollback EXEC sp_dropmessage 55201, 'all';

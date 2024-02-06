@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOffering_ValidateExclusive_fn stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ProductOffering_ValidateExclusive_fn stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE FUNCTION ProductOffering_ValidateExclusive_fn
 (

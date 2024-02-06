@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:test stripComments:false endDelimiter:GO contextFilter:@dev runOnChange:true
+-- changeset ${AUTHOR}:test stripComments:false endDelimiter:GO contextFilter:@dev runOnChange:true
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC tSQLt.NewTestClass PersonAdminRole_Add;
 GO

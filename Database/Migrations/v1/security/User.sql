@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:WebAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:WebAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE LOGIN OrderManagerWebAdmin WITH PASSWORD = '${WEB_ADMIN_PASSWORD}';
 CREATE USER WebAdmin FOR LOGIN OrderManagerWebAdmin;
@@ -15,7 +15,7 @@ ALTER ROLE db_datareader ADD MEMBER WebAdmin;
 -- rollback DROP LOGIN OrderManagerWebAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:WebCustomer stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:WebCustomer stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE LOGIN OrderManagerWebCustomer WITH PASSWORD = '${WEB_CUSTOMER_PASSWORD}';
 CREATE USER WebCustomer FOR LOGIN OrderManagerWebCustomer;

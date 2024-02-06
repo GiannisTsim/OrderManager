@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem_Drop_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:OrderItem_Drop_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE OrderItem_Drop_vtr
 (
@@ -55,7 +55,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem_Drop_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:OrderItem_Drop_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE OrderItem_Drop_tr
 (
@@ -105,7 +105,7 @@ BEGIN
           AND BranchNo = @BranchNo
           AND AgentNo = @AgentNo
           AND OrderNo = @OrderNo_Cart;
-        
+
         -- Commit --
         COMMIT TRANSACTION @ProcName;
         RETURN 0;

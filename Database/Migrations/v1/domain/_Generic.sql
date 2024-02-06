@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:_Generic stripComments:false
+-- changeset ${AUTHOR}:_Generic stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE NodeTypeCode FROM CHAR(1);
 CREATE TYPE NodeTypeName FROM NVARCHAR(256);

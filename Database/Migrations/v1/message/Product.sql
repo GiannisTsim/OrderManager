@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category stripComments:false
+-- changeset ${AUTHOR}:Category stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 53101, 16, 'Category.Name cannot be null.';
 -- rollback EXEC sp_dropmessage 53101, 'all';
@@ -21,7 +21,7 @@ EXEC sp_addmessage 53105, 16,
 -- rollback EXEC sp_dropmessage 53105, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Manufacturer stripComments:false
+-- changeset ${AUTHOR}:Manufacturer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 53201, 16, 'Manufacturer.Name cannot be null.';
 -- rollback EXEC sp_dropmessage 53201, 'all';
@@ -37,7 +37,7 @@ EXEC sp_addmessage 53204, 16,
 -- rollback EXEC sp_dropmessage 53204, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand stripComments:false
+-- changeset ${AUTHOR}:ManufacturerBrand stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 53301, 16, 'ManufacturerBrand.Name cannot be null.';
 -- rollback EXEC sp_dropmessage 53301, 'all';
@@ -53,7 +53,7 @@ EXEC sp_addmessage 53304, 16,
 -- rollback EXEC sp_dropmessage 53304, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product stripComments:false
+-- changeset ${AUTHOR}:Product stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 53401, 16, 'Product.ProductCode cannot be null.';
 -- rollback EXEC sp_dropmessage 53401, 'all';
@@ -78,7 +78,7 @@ EXEC sp_addmessage 53407, 16,
 -- rollback EXEC sp_dropmessage 53407, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOffering stripComments:false
+-- changeset ${AUTHOR}:ProductOffering stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 53501, 16, 'OfferingType[OfferingTypeCode=''%s''] does not exist.';
 -- rollback EXEC sp_dropmessage 53501, 'all';

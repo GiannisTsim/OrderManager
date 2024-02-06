@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Person stripComments:false
+-- changeset ${AUTHOR}:Person stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE PersonTypeCode FROM CHAR(1);
 CREATE TYPE PersonTypeName FROM NVARCHAR(256);

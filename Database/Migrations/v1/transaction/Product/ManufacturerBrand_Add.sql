@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ManufacturerBrand_Add_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ManufacturerBrand_Add_vtr
 (
@@ -51,7 +51,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand_Add_utr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ManufacturerBrand_Add_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ManufacturerBrand_Add_utr
 (
@@ -87,7 +87,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand_Add_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ManufacturerBrand_Add_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ManufacturerBrand_Add_tr
 (

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Modify_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Modify_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Modify_vtr
 (
@@ -60,7 +60,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_Modify_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_Modify_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Category_Modify_tr
 (

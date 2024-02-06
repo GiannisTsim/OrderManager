@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Itinerary stripComments:false
+-- changeset ${AUTHOR}:Itinerary stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Itinerary
 (
@@ -18,7 +18,7 @@ CREATE TABLE Itinerary
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ItineraryStop stripComments:false
+-- changeset ${AUTHOR}:ItineraryStop stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE ItineraryStop
 (

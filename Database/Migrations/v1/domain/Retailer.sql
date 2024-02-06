@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer stripComments:false
+-- changeset ${AUTHOR}:Retailer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE RetailerNo FROM INT;
 CREATE TYPE RetailerName FROM NVARCHAR(256);

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Itinerary stripComments:false
+-- changeset ${AUTHOR}:Itinerary stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 54101, 16, 'Itinerary.DepartureWeekday cannot be null.';
 -- rollback EXEC sp_dropmessage 54101, 'all';
@@ -37,7 +37,7 @@ EXEC sp_addmessage 54110, 16,
 -- rollback EXEC sp_dropmessage 54110, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ItineraryStop stripComments:false
+-- changeset ${AUTHOR}:ItineraryStop stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 54201, 16,
      'ItineraryStop[DepartureWeekday=%d,DepartureTime=''%s'',VehicleRegistrationNo=''%s'',RetailerNo=%d,BranchNo=%d] already exists.';

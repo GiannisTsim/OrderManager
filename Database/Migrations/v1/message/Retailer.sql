@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Retailer stripComments:false
+-- changeset ${AUTHOR}:Retailer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 52101, 16, 'Retailer.VatId cannot be null.';
 -- rollback EXEC sp_dropmessage 52101, 'all';
@@ -25,7 +25,7 @@ EXEC sp_addmessage 52107, 16, 'Retailer[RetailerNo=%d] cannot be deleted while b
 -- rollback EXEC sp_dropmessage 52107, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranch stripComments:false
+-- changeset ${AUTHOR}:RetailerBranch stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 52201, 16, 'RetailerBranch.Name cannot be null.';
 -- rollback EXEC sp_dropmessage 52201, 'all';
@@ -44,7 +44,7 @@ EXEC sp_addmessage 52205, 16,
 -- rollback EXEC sp_dropmessage 52205, 'all';
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerBranchAgent stripComments:false
+-- changeset ${AUTHOR}:RetailerBranchAgent stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 52301, 16, 'RetailerBranchAgent[RetailerNo=%d,BranchNo=%d,AgentNo=%d] already exists.';
 -- rollback EXEC sp_dropmessage 52301, 'all';

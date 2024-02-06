@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:_Generic stripComments:false
+-- changeset ${AUTHOR}:_Generic stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 EXEC sp_addmessage 50001, 16, 'Transaction cannot be called from within an open transaction.';
 -- rollback EXEC sp_dropmessage 50001, 'all';

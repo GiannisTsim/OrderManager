@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonAdminRole_Add_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:PersonAdminRole_Add_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE PersonAdminRole_Add_vtr
 (
@@ -40,7 +40,7 @@ BEGIN
         BEGIN
             RAISERROR (51202, -1, @State, @AdminNo, @AdminRoleCode);
         END
-        
+
     -- Validation successful--
     RETURN 0;
 END
@@ -49,7 +49,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonAdminRole_Add_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:PersonAdminRole_Add_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE PersonAdminRole_Add_tr
 (

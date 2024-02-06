@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem_Modify_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:OrderItem_Modify_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE OrderItem_Modify_vtr
 (
@@ -55,7 +55,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderItem_Modify_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:OrderItem_Modify_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE OrderItem_Modify_tr
 (

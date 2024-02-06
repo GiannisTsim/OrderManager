@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ItineraryStop_Drop_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ItineraryStop_Drop_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ItineraryStop_Drop_vtr
 (
@@ -41,7 +41,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ItineraryStop_Drop_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ItineraryStop_Drop_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE ItineraryStop_Drop_tr
 (

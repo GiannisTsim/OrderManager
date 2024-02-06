@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product stripComments:false
+-- changeset ${AUTHOR}:Product stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE CategoryNo FROM TINYINT;
 CREATE TYPE CategoryName FROM NVARCHAR(256);

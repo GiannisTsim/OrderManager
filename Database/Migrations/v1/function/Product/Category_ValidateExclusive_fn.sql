@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category_ValidateExclusive_fn stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Category_ValidateExclusive_fn stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE FUNCTION Category_ValidateExclusive_fn
 (

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Category stripComments:false
+-- changeset ${AUTHOR}:Category stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Category
 (
@@ -45,7 +45,7 @@ ALTER TABLE Category
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Manufacturer stripComments:false
+-- changeset ${AUTHOR}:Manufacturer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Manufacturer
 (
@@ -58,7 +58,7 @@ CREATE TABLE Manufacturer
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ManufacturerBrand stripComments:false
+-- changeset ${AUTHOR}:ManufacturerBrand stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE ManufacturerBrand
 (
@@ -73,7 +73,7 @@ CREATE TABLE ManufacturerBrand
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product stripComments:false
+-- changeset ${AUTHOR}:Product stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE Product
 (
@@ -93,7 +93,7 @@ CREATE TABLE Product
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OfferingType stripComments:false
+-- changeset ${AUTHOR}:OfferingType stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE OfferingType
 (
@@ -109,7 +109,7 @@ VALUES ('U', 'Unit'),
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:BundleType stripComments:false
+-- changeset ${AUTHOR}:BundleType stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE BundleType
 (
@@ -122,7 +122,7 @@ CREATE TABLE BundleType
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOffering stripComments:false
+-- changeset ${AUTHOR}:ProductOffering stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --    
 CREATE TABLE ProductOffering
 (
@@ -139,7 +139,7 @@ CREATE TABLE ProductOffering
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOffering_Unit stripComments:false
+-- changeset ${AUTHOR}:ProductOffering_Unit stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE ProductOffering_Unit
 (
@@ -153,7 +153,7 @@ CREATE TABLE ProductOffering_Unit
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductOffering_Bundle stripComments:false
+-- changeset ${AUTHOR}:ProductOffering_Bundle stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TABLE ProductOffering_Bundle
 (

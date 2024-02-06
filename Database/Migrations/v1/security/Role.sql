@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:PersonAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:PersonAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE PersonAdmin;
 GRANT EXECUTE ON Person_Drop_tr TO PersonAdmin;
@@ -13,7 +13,7 @@ GRANT EXECUTE ON PersonAdminRole_Drop_tr TO PersonAdmin;
 -- rollback DROP ROLE PersonAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:RetailerAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:RetailerAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE RetailerAdmin;
 GRANT EXECUTE ON Retailer_Add_tr TO RetailerAdmin;
@@ -33,7 +33,7 @@ GRANT EXECUTE ON RetailerBranchAgent_Restore_tr TO RetailerAdmin;
 -- rollback DROP ROLE RetailerAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ProductAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ProductAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE ProductAdmin;
 GRANT EXECUTE ON Category_Leaf_Add_tr TO ProductAdmin;
@@ -58,7 +58,7 @@ GRANT EXECUTE ON ProductOffering_Restore_tr TO ProductAdmin;
 -- rollback DROP ROLE ProductAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:ItineraryAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:ItineraryAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE ItineraryAdmin;
 GRANT EXECUTE ON Itinerary_Add_tr TO ItineraryAdmin;
@@ -69,13 +69,13 @@ GRANT EXECUTE ON ItineraryStop_Drop_tr TO ItineraryAdmin;
 -- rollback DROP ROLE ItineraryAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:OrderAdmin stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:OrderAdmin stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE OrderAdmin;
 -- rollback DROP ROLE OrderAdmin;
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Customer stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Customer stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE ROLE Customer;
 GRANT EXECUTE ON Order_Submit_tr TO Customer;

@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Restore_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Restore_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Restore_vtr
 (
@@ -38,7 +38,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Product_Restore_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Product_Restore_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Product_Restore_tr
 (

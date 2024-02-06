@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order stripComments:false
+-- changeset ${AUTHOR}:Order stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE TYPE OrderTypeCode FROM CHAR(1);
 CREATE TYPE OrderTypeName FROM NVARCHAR(256);

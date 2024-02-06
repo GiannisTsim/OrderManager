@@ -1,5 +1,5 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:TEMPLATE_utr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:TEMPLATE_utr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE TEMPLATE_utr
 (

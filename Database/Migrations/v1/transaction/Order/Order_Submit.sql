@@ -1,7 +1,7 @@
 -- liquibase formatted sql
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order_Submit_vtr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Order_Submit_vtr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Order_Submit_vtr
 (
@@ -45,7 +45,7 @@ GO
 
 
 -- ------------------------------------------------------------------------------------------------------------------ --
--- changeset ${author}:Order_Submit_tr stripComments:false endDelimiter:GO
+-- changeset ${AUTHOR}:Order_Submit_tr stripComments:false endDelimiter:GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Order_Submit_tr
 (
