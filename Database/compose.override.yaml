@@ -1,0 +1,8 @@
+services:
+  mssql:
+    environment:
+      - MSSQL_PID=Developer
+
+  liquibase:
+    environment:
+      - LIQUIBASE_COMMAND_CONTEXT_FILTER=dev
