@@ -17,7 +17,7 @@ public class RetailerBranchRepository : IRetailerBranchRepository
 
     public async Task<IEnumerable<RetailerBranch>> GetAsync(int retailerNo)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         return await connection.QueryAsync<RetailerBranch>
         (
             """

@@ -8,11 +8,10 @@
     <include file="domain/domain.xml" relativeToChangelogFile="true"/>
     <include file="message/message.xml" relativeToChangelogFile="true"/>
     <include file="table/table.xml" relativeToChangelogFile="true"/>
-    <include file="index/index.xml" relativeToChangelogFile="true"/>
     <include file="function/function.xml" relativeToChangelogFile="true"/>
     <include file="constraint/constraint.xml" relativeToChangelogFile="true"/>
     <include file="transaction/transaction.xml" relativeToChangelogFile="true"/>
     <include file="view/view.xml" relativeToChangelogFile="true"/>
-    <include file="data/data.xml" relativeToChangelogFile="true"/>
+    <include file="security/security.xml" relativeToChangelogFile="true"/>
 
 </databaseChangeLog>

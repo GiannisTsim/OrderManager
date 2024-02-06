@@ -3,16 +3,16 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${author}:test stripComments:false endDelimiter:GO contextFilter:@dev runOnChange:true
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC tSQLt.NewTestClass PersonAdminRole_Add_tr;
+EXEC tSQLt.NewTestClass PersonAdminRole_Add;
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.SetUp AS
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.SetUp AS
 BEGIN
     EXEC tSQLt.SpyProcedure Xact_Integrity_Check;
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test success when adding new Person_Invitee]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test success when adding new Person_Invitee]
 AS
 BEGIN
     DECLARE @AdminNo PersonNo;
@@ -48,7 +48,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test success when adding new Person_User]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test success when adding new Person_User]
 AS
 BEGIN
     DECLARE @AdminNo PersonNo;
@@ -83,7 +83,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test success when called for existing Person]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test success when called for existing Person]
 AS
 BEGIN
     DECLARE @AdminNo PersonNo = 1;
@@ -107,7 +107,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when PersonAdminRole already exists]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when PersonAdminRole already exists]
 AS
 BEGIN
     DECLARE @AdminNo PersonNo = 1;
@@ -122,7 +122,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when called for Person that does not exist]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when called for Person that does not exist]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51108, @ExpectedSeverity = 16;
@@ -130,7 +130,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when AdminRole does not exist]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when AdminRole does not exist]
 AS
 BEGIN
     DECLARE @AdminNo PersonNo = 1;
@@ -143,7 +143,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person with an existing Email]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person with an existing Email]
 AS
 BEGIN
     DECLARE @Email Email = 'test@test.com';
@@ -157,7 +157,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person with invalid Email]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person with invalid Email]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51101, @ExpectedSeverity = 16;
@@ -166,7 +166,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person with NULL EmailConfirmed]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person with NULL EmailConfirmed]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51102, @ExpectedSeverity = 16;
@@ -175,7 +175,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person with NULL PersonTypeCode]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person with NULL PersonTypeCode]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51103, @ExpectedSeverity = 16;
@@ -184,7 +184,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person with invalid PersonTypeCode]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person with invalid PersonTypeCode]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51104, @ExpectedSeverity = 16;
@@ -193,7 +193,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person_Invitee with NULL InvitationDtm]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person_Invitee with NULL InvitationDtm]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51105, @ExpectedSeverity = 16;
@@ -202,7 +202,7 @@ BEGIN
 END
 GO
 
-CREATE OR ALTER PROCEDURE PersonAdminRole_Add_tr.[Test error with code when adding new Person_User with NULL PasswordHash]
+CREATE OR ALTER PROCEDURE PersonAdminRole_Add.[Test error with code when adding new Person_User with NULL PasswordHash]
 AS
 BEGIN
     EXEC tSQLt.ExpectException @ExpectedErrorNumber = 51106, @ExpectedSeverity = 16;

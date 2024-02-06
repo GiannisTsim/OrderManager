@@ -1,11 +1,14 @@
-USE master
+USE master;
 GO
+
 -- Create the new database if it does not already exist 
 IF NOT EXISTS
     (
-        SELECT name
+        SELECT 1
         FROM sys.databases
         WHERE name = N'$(DB_NAME)'
     )
-CREATE DATABASE $(DB_NAME);
+    BEGIN
+        CREATE DATABASE $(DB_NAME);
+    END
 GO

@@ -26,7 +26,7 @@ public class RetailerRepository : IRetailerRepository
         int? pageSize = 10
     )
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailers = await connection.QueryAsync<Retailer>
         (
             """
@@ -59,7 +59,7 @@ public class RetailerRepository : IRetailerRepository
         string? searchTerm = null
     )
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var totalResultCount = await connection.ExecuteScalarAsync<int>
         (
             """
@@ -75,7 +75,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<Retailer?> FindByRetailerNoAsync(int retailerNo)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
         (
             """
@@ -95,7 +95,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<Retailer?> FindByVatIdAsync(string vatId)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
         (
             """
@@ -115,7 +115,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<Retailer?> FindByNameAsync(string name)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
         (
             """
@@ -135,7 +135,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<bool> VerifyExistenceByVatIdAsync(string vatId)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailerExists = await connection.ExecuteScalarAsync<bool>
         (
             """
@@ -148,7 +148,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<bool> VerifyExistenceByNameAsync(string name)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailerExists = await connection.ExecuteScalarAsync<bool>
         (
             """
@@ -161,7 +161,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<bool> VerifyCurrencyAsync(int retailerNo, DateTimeOffset updatedDtm)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
         var retailerIsCurrent = await connection.ExecuteScalarAsync<bool>
         (
             """
@@ -178,7 +178,7 @@ public class RetailerRepository : IRetailerRepository
         var p = new DynamicParameters(retailer);
         p.Add("@RetailerNo", DbType.Int32, direction: ParameterDirection.Output);
 
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
 
         try
         {
@@ -204,7 +204,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task ModifyAsync(RetailerModifyCommand retailer)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
 
 
         try
@@ -236,7 +236,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task ObsoleteAsync(RetailerObsoleteCommand retailer)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("RetailerAdminConnection"));
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
 
         try
         {
