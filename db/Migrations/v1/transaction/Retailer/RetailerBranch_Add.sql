@@ -57,19 +57,26 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @Name IS NULL
-        BEGIN
-            RAISERROR (52201, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC RetailerBranch_Add_vtr @RetailerNo, @Name;
+        -- Parameter checks --
+        IF @Name IS NULL
+            BEGIN
+                RAISERROR (52201, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC RetailerBranch_Add_vtr @RetailerNo, @Name;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

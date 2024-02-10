@@ -73,23 +73,29 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @Quantity IS NULL
-        BEGIN
-            RAISERROR (55201, -1, 1);
-        END
-    IF @Quantity <= 0
-        BEGIN
-            RAISERROR (55202, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC OrderItem_Modify_vtr @RetailerNo, @BranchNo, @AgentNo, @OrderNo_Cart, @ProductCode, @OfferingNo;
+        -- Parameter checks --
+        IF @Quantity IS NULL
+            BEGIN
+                RAISERROR (55201, -1, 1);
+            END
+        IF @Quantity <= 0
+            BEGIN
+                RAISERROR (55202, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC OrderItem_Modify_vtr @RetailerNo, @BranchNo, @AgentNo, @OrderNo_Cart, @ProductCode, @OfferingNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
     -------------------
     -- Execute block --
     -------------------

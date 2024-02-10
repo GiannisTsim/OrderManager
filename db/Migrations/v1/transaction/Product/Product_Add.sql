@@ -103,36 +103,43 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @CategoryNo IS NULL AND @CategoryName IS NULL
-        BEGIN
-            RAISERROR (53101, -1, 1);
-        END
-    IF @ManufacturerNo IS NULL AND @ManufacturerName IS NULL
-        BEGIN
-            RAISERROR (53201, -1, 1);
-        END
-    IF @BrandNo IS NULL AND @BrandName IS NULL
-        BEGIN
-            RAISERROR (53301, -1, 1);
-        END
-    IF @ProductCode IS NULL
-        BEGIN
-            RAISERROR (53401, -1, 1);
-        END
-    IF @Name IS NULL
-        BEGIN
-            RAISERROR (53402, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Product_Add_vtr @ProductCode, @Name, @ManufacturerNo, @BrandNo, @CategoryNo, @ManufacturerName, @BrandName,
-         @CategoryName, @ParentCategoryNo;
+        -- Parameter checks --
+        IF @CategoryNo IS NULL AND @CategoryName IS NULL
+            BEGIN
+                RAISERROR (53101, -1, 1);
+            END
+        IF @ManufacturerNo IS NULL AND @ManufacturerName IS NULL
+            BEGIN
+                RAISERROR (53201, -1, 1);
+            END
+        IF @BrandNo IS NULL AND @BrandName IS NULL
+            BEGIN
+                RAISERROR (53301, -1, 1);
+            END
+        IF @ProductCode IS NULL
+            BEGIN
+                RAISERROR (53401, -1, 1);
+            END
+        IF @Name IS NULL
+            BEGIN
+                RAISERROR (53402, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Product_Add_vtr @ProductCode, @Name, @ManufacturerNo, @BrandNo, @CategoryNo, @ManufacturerName, @BrandName,
+             @CategoryName, @ParentCategoryNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

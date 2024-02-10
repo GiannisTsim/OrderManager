@@ -78,42 +78,49 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @AgentNo IS NULL
-        BEGIN
-            IF @Email IS NULL
-                BEGIN
-                    RAISERROR (51101, -1, 1);
-                END
-            IF @EmailConfirmed IS NULL
-                BEGIN
-                    RAISERROR (51102, -1, 1);
-                END
-            IF @PersonTypeCode IS NULL
-                BEGIN
-                    RAISERROR (51103, -1, 1);
-                END
-            IF @PersonTypeCode NOT IN ('I', 'U')
-                BEGIN
-                    RAISERROR (51104, -1, 1, @PersonTypeCode);
-                END
-            IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
-                BEGIN
-                    RAISERROR (51105, -1, 1);
-                END
-            IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
-                BEGIN
-                    RAISERROR (51106, -1, 1);
-                END
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC RetailerBranchAgent_Add_vtr @RetailerNo, @BranchNo, @AgentNo, @Email;
+        -- Parameter checks --
+        IF @AgentNo IS NULL
+            BEGIN
+                IF @Email IS NULL
+                    BEGIN
+                        RAISERROR (51101, -1, 1);
+                    END
+                IF @EmailConfirmed IS NULL
+                    BEGIN
+                        RAISERROR (51102, -1, 1);
+                    END
+                IF @PersonTypeCode IS NULL
+                    BEGIN
+                        RAISERROR (51103, -1, 1);
+                    END
+                IF @PersonTypeCode NOT IN ('I', 'U')
+                    BEGIN
+                        RAISERROR (51104, -1, 1, @PersonTypeCode);
+                    END
+                IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
+                    BEGIN
+                        RAISERROR (51105, -1, 1);
+                    END
+                IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
+                    BEGIN
+                        RAISERROR (51106, -1, 1);
+                    END
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC RetailerBranchAgent_Add_vtr @RetailerNo, @BranchNo, @AgentNo, @Email;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+    
     -------------------
     -- Execute block --
     -------------------

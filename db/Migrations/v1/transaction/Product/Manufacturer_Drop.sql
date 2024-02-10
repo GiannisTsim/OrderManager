@@ -53,13 +53,20 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Manufacturer_Drop_vtr @ManufacturerNo;
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Manufacturer_Drop_vtr @ManufacturerNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

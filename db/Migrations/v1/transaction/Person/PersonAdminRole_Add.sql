@@ -67,51 +67,58 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @AdminNo IS NULL
-        BEGIN
-            IF @Email IS NULL
-                BEGIN
-                    RAISERROR (51101, -1, 1);
-                END
-            IF @EmailConfirmed IS NULL
-                BEGIN
-                    RAISERROR (51102, -1, 1);
-                END
-            IF @PersonTypeCode IS NULL
-                BEGIN
-                    RAISERROR (51103, -1, 1);
-                END
-            IF @PersonTypeCode NOT IN ('I', 'U')
-                BEGIN
-                    RAISERROR (51104, -1, 1, @PersonTypeCode);
-                END
-            IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
-                BEGIN
-                    RAISERROR (51105, -1, 1);
-                END
-            IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
-                BEGIN
-                    RAISERROR (51106, -1, 1);
-                END
-        END
-    IF NOT EXISTS
-        (
-            SELECT 1
-            FROM AdminRole
-            WHERE AdminRoleCode = @AdminRoleCode
-        )
-        BEGIN
-            RAISERROR (51201, -1, 1, @AdminRoleCode);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC PersonAdminRole_Add_vtr @AdminNo, @Email, @AdminRoleCode;
+        -- Parameter checks --
+        IF @AdminNo IS NULL
+            BEGIN
+                IF @Email IS NULL
+                    BEGIN
+                        RAISERROR (51101, -1, 1);
+                    END
+                IF @EmailConfirmed IS NULL
+                    BEGIN
+                        RAISERROR (51102, -1, 1);
+                    END
+                IF @PersonTypeCode IS NULL
+                    BEGIN
+                        RAISERROR (51103, -1, 1);
+                    END
+                IF @PersonTypeCode NOT IN ('I', 'U')
+                    BEGIN
+                        RAISERROR (51104, -1, 1, @PersonTypeCode);
+                    END
+                IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
+                    BEGIN
+                        RAISERROR (51105, -1, 1);
+                    END
+                IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
+                    BEGIN
+                        RAISERROR (51106, -1, 1);
+                    END
+            END
+        IF NOT EXISTS
+            (
+                SELECT 1
+                FROM AdminRole
+                WHERE AdminRoleCode = @AdminRoleCode
+            )
+            BEGIN
+                RAISERROR (51201, -1, 1, @AdminRoleCode);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC PersonAdminRole_Add_vtr @AdminNo, @Email, @AdminRoleCode;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

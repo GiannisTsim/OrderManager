@@ -112,31 +112,38 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @OfferingTypeCode NOT IN ('U', 'B')
-        BEGIN
-            RAISERROR (53501, -1, 1);
-        END
-    IF @OfferingTypeCode = 'B' AND @UnitCount IS NULL
-        BEGIN
-            RAISERROR (53502, -1, 1);
-        END
-    IF @OfferingTypeCode = 'B' AND @UnitCount <= 0
-        BEGIN
-            RAISERROR (53503, -1, 1);
-        END
-    IF @OfferingTypeCode = 'B' AND @BundleTypeNo IS NULL AND @BundleTypeName IS NULL
-        BEGIN
-            RAISERROR (53504, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC ProductOffering_Add_vtr @ProductCode, @OfferingTypeCode, @UnitCount, @BundleTypeNo, @BundleTypeName;
+        -- Parameter checks --
+        IF @OfferingTypeCode NOT IN ('U', 'B')
+            BEGIN
+                RAISERROR (53501, -1, 1);
+            END
+        IF @OfferingTypeCode = 'B' AND @UnitCount IS NULL
+            BEGIN
+                RAISERROR (53502, -1, 1);
+            END
+        IF @OfferingTypeCode = 'B' AND @UnitCount <= 0
+            BEGIN
+                RAISERROR (53503, -1, 1);
+            END
+        IF @OfferingTypeCode = 'B' AND @BundleTypeNo IS NULL AND @BundleTypeName IS NULL
+            BEGIN
+                RAISERROR (53504, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC ProductOffering_Add_vtr @ProductCode, @OfferingTypeCode, @UnitCount, @BundleTypeNo, @BundleTypeName;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

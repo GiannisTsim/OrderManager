@@ -53,26 +53,33 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
+        
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Parameter checks --
-    IF @OrderDeadlineWeekday IS NULL
-        BEGIN
-            RAISERROR (54105, -1, 1);
-        END
-    IF @OrderDeadlineWeekday < 1 OR @OrderDeadlineWeekday > 7
-        BEGIN
-            RAISERROR (54106, -1, 1);
-        END
-    IF @OrderDeadlineTime IS NULL
-        BEGIN
-            RAISERROR (54107, -1, 1);
-        END
+        -- Parameter checks --
+        IF @OrderDeadlineWeekday IS NULL
+            BEGIN
+                RAISERROR (54105, -1, 1);
+            END
+        IF @OrderDeadlineWeekday < 1 OR @OrderDeadlineWeekday > 7
+            BEGIN
+                RAISERROR (54106, -1, 1);
+            END
+        IF @OrderDeadlineTime IS NULL
+            BEGIN
+                RAISERROR (54107, -1, 1);
+            END
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Itinerary_Modify_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo;
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Itinerary_Modify_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
 
     -------------------
     -- Execute block --

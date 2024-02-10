@@ -56,23 +56,30 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @VatId IS NULL
-        BEGIN
-            RAISERROR (52101, -1 , 1);
-        END
-    IF @Name IS NULL
-        BEGIN
-            RAISERROR (52102, -1 , 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Retailer_Add_vtr @VatId, @Name;
+        -- Parameter checks --
+        IF @VatId IS NULL
+            BEGIN
+                RAISERROR (52101, -1 , 1);
+            END
+        IF @Name IS NULL
+            BEGIN
+                RAISERROR (52102, -1 , 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Retailer_Add_vtr @VatId, @Name;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------

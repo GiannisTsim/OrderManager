@@ -65,38 +65,45 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @Email IS NULL
-        BEGIN
-            RAISERROR (51101, -1, 1);
-        END
-    IF @EmailConfirmed IS NULL
-        BEGIN
-            RAISERROR (51102, -1, 1);
-        END
-    IF @PersonTypeCode IS NULL
-        BEGIN
-            RAISERROR (51103, -1, 1);
-        END
-    IF @PersonTypeCode NOT IN ('I', 'U')
-        BEGIN
-            RAISERROR (51104, -1, -1, @PersonTypeCode);
-        END
-    IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
-        BEGIN
-            RAISERROR (51105, -1, -1);
-        END
-    IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
-        BEGIN
-            RAISERROR (51106, -1, -1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Person_Modify_vtr @PersonNo, @UpdatedDtm, @Email;
+        -- Parameter checks --
+        IF @Email IS NULL
+            BEGIN
+                RAISERROR (51101, -1, 1);
+            END
+        IF @EmailConfirmed IS NULL
+            BEGIN
+                RAISERROR (51102, -1, 1);
+            END
+        IF @PersonTypeCode IS NULL
+            BEGIN
+                RAISERROR (51103, -1, 1);
+            END
+        IF @PersonTypeCode NOT IN ('I', 'U')
+            BEGIN
+                RAISERROR (51104, -1, -1, @PersonTypeCode);
+            END
+        IF @PersonTypeCode = 'I' AND @InvitationDtm IS NULL
+            BEGIN
+                RAISERROR (51105, -1, -1);
+            END
+        IF @PersonTypeCode = 'U' AND @PasswordHash IS NULL
+            BEGIN
+                RAISERROR (51106, -1, -1);
+            END
+
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Person_Modify_vtr @PersonNo, @UpdatedDtm, @Email;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
 
     -------------------
     -- Execute block --
@@ -149,7 +156,8 @@ BEGIN
         -- Commit --
         COMMIT TRANSACTION @ProcName;
         RETURN 0;
-    END TRY BEGIN CATCH
+    END TRY
+    BEGIN CATCH
         ROLLBACK TRANSACTION @ProcName;
         THROW;
     END CATCH

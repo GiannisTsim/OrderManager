@@ -57,12 +57,19 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
+        
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC ItineraryStop_Add_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo, @RetailerNo, @BranchNo;
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC ItineraryStop_Add_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo, @RetailerNo, @BranchNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
 
     -------------------
     -- Execute block --

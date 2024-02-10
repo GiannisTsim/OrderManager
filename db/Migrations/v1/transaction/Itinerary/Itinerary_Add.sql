@@ -53,43 +53,50 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @DepartureWeekday IS NULL
-        BEGIN
-            RAISERROR (54101, -1, 1);
-        END
-    IF @DepartureWeekday < 1 OR @DepartureWeekday > 7
-        BEGIN
-            RAISERROR (54102, -1, 1);
-        END
-    IF @DepartureTime IS NULL
-        BEGIN
-            RAISERROR (54103, -1, 1);
-        END
-    IF @VehicleRegistrationNo IS NULL
-        BEGIN
-            RAISERROR (54104, -1, 1);
-        END
-    IF @OrderDeadlineWeekday IS NULL
-        BEGIN
-            RAISERROR (54105, -1, 1);
-        END
-    IF @OrderDeadlineWeekday < 1 OR @OrderDeadlineWeekday > 7
-        BEGIN
-            RAISERROR (54106, -1, 1);
-        END
-    IF @OrderDeadlineTime IS NULL
-        BEGIN
-            RAISERROR (54107, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Itinerary_Add_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo;
+        -- Parameter checks --
+        IF @DepartureWeekday IS NULL
+            BEGIN
+                RAISERROR (54101, -1, 1);
+            END
+        IF @DepartureWeekday < 1 OR @DepartureWeekday > 7
+            BEGIN
+                RAISERROR (54102, -1, 1);
+            END
+        IF @DepartureTime IS NULL
+            BEGIN
+                RAISERROR (54103, -1, 1);
+            END
+        IF @VehicleRegistrationNo IS NULL
+            BEGIN
+                RAISERROR (54104, -1, 1);
+            END
+        IF @OrderDeadlineWeekday IS NULL
+            BEGIN
+                RAISERROR (54105, -1, 1);
+            END
+        IF @OrderDeadlineWeekday < 1 OR @OrderDeadlineWeekday > 7
+            BEGIN
+                RAISERROR (54106, -1, 1);
+            END
+        IF @OrderDeadlineTime IS NULL
+            BEGIN
+                RAISERROR (54107, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Itinerary_Add_vtr @DepartureWeekday, @DepartureTime, @VehicleRegistrationNo;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+    
     -------------------
     -- Execute block --
     -------------------

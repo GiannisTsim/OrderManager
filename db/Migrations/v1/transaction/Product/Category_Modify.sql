@@ -74,19 +74,26 @@ BEGIN
     ----------------------
     -- Validation block --
     ----------------------
-    -- Transaction integrity check --
-    EXEC Xact_Integrity_Check;
+    BEGIN TRY
 
-    -- Parameter checks --
-    IF @Name IS NULL
-        BEGIN
-            RAISERROR (53101, -1, 1);
-        END
+        -- Transaction integrity check --
+        EXEC Xact_Integrity_Check;
 
-    -- Offline constraint validation (no locks held) --
-    SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-    EXEC Category_Modify_vtr @CategoryNo, @ParentCategoryNo, @Name;
+        -- Parameter checks --
+        IF @Name IS NULL
+            BEGIN
+                RAISERROR (53101, -1, 1);
+            END
 
+        -- Offline constraint validation (no locks held) --
+        SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
+        EXEC Category_Modify_vtr @CategoryNo, @ParentCategoryNo, @Name;
+
+    END TRY
+    BEGIN CATCH
+        THROW;
+    END CATCH
+        
     -------------------
     -- Execute block --
     -------------------
