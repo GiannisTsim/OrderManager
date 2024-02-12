@@ -71,7 +71,7 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @Email IS NULL
+        IF @Email IS NULL OR @Email = ''
             BEGIN
                 RAISERROR (51101, -1, 1);
             END

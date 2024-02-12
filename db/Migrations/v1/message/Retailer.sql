@@ -3,10 +3,10 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Retailer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 52101, 16, 'Retailer.VatId cannot be null.';
+EXEC sp_addmessage 52101, 16, 'Retailer.VatId cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 52101, 'all';
 
-EXEC sp_addmessage 52102, 16, 'Retailer.Name cannot be null.';
+EXEC sp_addmessage 52102, 16, 'Retailer.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 52102, 'all';
 
 EXEC sp_addmessage 52103, 16, 'Retailer[VatId=''%s''] already exists.';
@@ -27,7 +27,7 @@ EXEC sp_addmessage 52107, 16, 'Retailer[RetailerNo=%d] cannot be deleted while b
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:RetailerBranch stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 52201, 16, 'RetailerBranch.Name cannot be null.';
+EXEC sp_addmessage 52201, 16, 'RetailerBranch.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 52201, 'all';
 
 EXEC sp_addmessage 52202, 16, 'RetailerBranch[RetailerNo=%d,Name=''%s''] already exists.';

@@ -12,7 +12,8 @@ CREATE TABLE Itinerary
     OrderDeadlineTime     _Time                 NOT NULL,
     CONSTRAINT UC_Itinerary_PK PRIMARY KEY CLUSTERED (DepartureWeekday, DepartureTime, VehicleRegistrationNo),
     CONSTRAINT Itinerary_DepartureWeekday_IsValid_ck CHECK (DepartureWeekday BETWEEN 1 AND 7),
-    CONSTRAINT Itinerary_OrderDeadlineWeekday_IsValid_ck CHECK (OrderDeadlineWeekday BETWEEN 1 AND 7)
+    CONSTRAINT Itinerary_OrderDeadlineWeekday_IsValid_ck CHECK (OrderDeadlineWeekday BETWEEN 1 AND 7),
+    CONSTRAINT VehicleRegistrationNo_NotEmpty_ck CHECK (VehicleRegistrationNo != '')
 );
 -- rollback DROP TABLE Itinerary;
 

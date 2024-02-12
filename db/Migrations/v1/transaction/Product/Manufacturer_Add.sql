@@ -79,7 +79,7 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @Name IS NULL
+        IF @Name IS NULL OR @Name = ''
             BEGIN
                 RAISERROR (53201, -1, 1);
             END
@@ -92,7 +92,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-        
+
     -------------------
     -- Execute block --
     -------------------

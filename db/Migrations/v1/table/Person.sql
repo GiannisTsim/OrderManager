@@ -29,7 +29,8 @@ CREATE TABLE Person
     PersonTypeCode PersonTypeCode NOT NULL,
     CONSTRAINT UC_Person_PK PRIMARY KEY CLUSTERED (PersonNo),
     CONSTRAINT U__Person_AK UNIQUE (Email),
-    CONSTRAINT PersonType_Discriminates_Person_fk FOREIGN KEY (PersonTypeCode) REFERENCES PersonType (PersonTypeCode)
+    CONSTRAINT PersonType_Discriminates_Person_fk FOREIGN KEY (PersonTypeCode) REFERENCES PersonType (PersonTypeCode),
+    CONSTRAINT Email_NotEmpty_ck CHECK (Email != '')
 );
 -- rollback DROP TABLE Person;
 

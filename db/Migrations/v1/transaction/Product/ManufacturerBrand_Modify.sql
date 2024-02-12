@@ -66,7 +66,7 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @Name IS NULL
+        IF @Name IS NULL OR @Name = ''
             BEGIN
                 RAISERROR (53301, -1, 1);
             END

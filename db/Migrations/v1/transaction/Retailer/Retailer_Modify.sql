@@ -81,11 +81,11 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @VatId IS NULL
+        IF @VatId IS NULL OR @VatId = ''
             BEGIN
                 RAISERROR (52101, -1 , 1);
             END
-        IF @Name IS NULL
+        IF @Name IS NULL OR @Name = ''
             BEGIN
                 RAISERROR (52102, -1 , 1);
             END
@@ -98,7 +98,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-        
+
     -------------------
     -- Execute block --
     -------------------

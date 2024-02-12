@@ -86,7 +86,7 @@ BEGIN
         -- Parameter checks --
         IF @AgentNo IS NULL
             BEGIN
-                IF @Email IS NULL
+                IF @Email IS NULL OR @Email = ''
                     BEGIN
                         RAISERROR (51101, -1, 1);
                     END
@@ -120,7 +120,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-    
+
     -------------------
     -- Execute block --
     -------------------

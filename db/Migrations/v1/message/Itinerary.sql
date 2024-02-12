@@ -12,7 +12,7 @@ EXEC sp_addmessage 54102, 16, 'Itinerary.DepartureWeekday must be an integer in 
 EXEC sp_addmessage 54103, 16, 'Itinerary.DepartureTime cannot be null.';
 -- rollback EXEC sp_dropmessage 54103, 'all';
 
-EXEC sp_addmessage 54104, 16, 'Itinerary.VehicleRegistrationNo cannot be null.';
+EXEC sp_addmessage 54104, 16, 'Itinerary.VehicleRegistrationNo cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 54104, 'all';
 
 EXEC sp_addmessage 54105, 16, 'Itinerary.OrderDeadlineWeekday cannot be null.';

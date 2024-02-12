@@ -108,11 +108,11 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @ManufacturerNo IS NULL AND @ManufacturerName IS NULL
+        IF @ManufacturerNo IS NULL AND (@ManufacturerName IS NULL OR @ManufacturerName = '')
             BEGIN
                 RAISERROR (53201, -1, 1);
             END
-        IF @Name IS NULL
+        IF @Name IS NULL OR @Name = ''
             BEGIN
                 RAISERROR (53301, -1, 1);
             END
@@ -125,7 +125,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-        
+
     -------------------
     -- Execute block --
     -------------------

@@ -109,23 +109,23 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @CategoryNo IS NULL AND @CategoryName IS NULL
+        IF @CategoryNo IS NULL AND (@CategoryName IS NULL OR @CategoryName = '')
             BEGIN
                 RAISERROR (53101, -1, 1);
             END
-        IF @ManufacturerNo IS NULL AND @ManufacturerName IS NULL
+        IF @ManufacturerNo IS NULL AND (@ManufacturerName IS NULL OR @ManufacturerName = '')
             BEGIN
                 RAISERROR (53201, -1, 1);
             END
-        IF @BrandNo IS NULL AND @BrandName IS NULL
+        IF @BrandNo IS NULL AND (@BrandName IS NULL OR @BrandName = '')
             BEGIN
                 RAISERROR (53301, -1, 1);
             END
-        IF @ProductCode IS NULL
+        IF @ProductCode IS NULL OR @ProductCode = ''
             BEGIN
                 RAISERROR (53401, -1, 1);
             END
-        IF @Name IS NULL
+        IF @Name IS NULL OR @Name = ''
             BEGIN
                 RAISERROR (53402, -1, 1);
             END
@@ -139,7 +139,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-        
+
     -------------------
     -- Execute block --
     -------------------

@@ -3,7 +3,7 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Category stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 53101, 16, 'Category.Name cannot be null.';
+EXEC sp_addmessage 53101, 16, 'Category.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53101, 'all';
 
 EXEC sp_addmessage 53102, 16, 'Category[ParentCategoryNo=%d,Name=''%s''] already exists.';
@@ -23,7 +23,7 @@ EXEC sp_addmessage 53105, 16,
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Manufacturer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 53201, 16, 'Manufacturer.Name cannot be null.';
+EXEC sp_addmessage 53201, 16, 'Manufacturer.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53201, 'all';
 
 EXEC sp_addmessage 53202, 16, 'Manufacturer[Name=''%s''] already exists.';
@@ -39,7 +39,7 @@ EXEC sp_addmessage 53204, 16,
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:ManufacturerBrand stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 53301, 16, 'ManufacturerBrand.Name cannot be null.';
+EXEC sp_addmessage 53301, 16, 'ManufacturerBrand.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53301, 'all';
 
 EXEC sp_addmessage 53302, 16, 'ManufacturerBrand[ManufacturerNo=%d,Name=''%s''] already exists.';
@@ -55,10 +55,10 @@ EXEC sp_addmessage 53304, 16,
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Product stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 53401, 16, 'Product.ProductCode cannot be null.';
+EXEC sp_addmessage 53401, 16, 'Product.ProductCode cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53401, 'all';
 
-EXEC sp_addmessage 53402, 16, 'Product.Name cannot be null.';
+EXEC sp_addmessage 53402, 16, 'Product.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53402, 'all';
 
 EXEC sp_addmessage 53403, 16, 'Product[ProductCode=''%s''] already exists.';
@@ -89,7 +89,7 @@ EXEC sp_addmessage 53502, 16, 'ProductOffering_Bundle.UnitCount cannot be null.'
 EXEC sp_addmessage 53503, 16, 'ProductOffering_Bundle.UnitCount must be greater than zero (0).';
 -- rollback EXEC sp_dropmessage 53503, 'all';
 
-EXEC sp_addmessage 53504, 16, 'BundleType.Name cannot be null.';
+EXEC sp_addmessage 53504, 16, 'BundleType.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 53504, 'all';
 
 EXEC sp_addmessage 53505, 16, 'BundleType[BundleTypeNo=''%s''] does not exist.';

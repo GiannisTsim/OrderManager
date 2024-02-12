@@ -12,6 +12,7 @@ CREATE TABLE Category
     CONSTRAINT UC_Category_PK PRIMARY KEY (CategoryNo),
     CONSTRAINT U__Category_AK UNIQUE (ParentCategoryNo, Name),
     CONSTRAINT NodeType_Discriminates_Category_fk FOREIGN KEY (NodeTypeCode) REFERENCES NodeType (NodeTypeCode),
+    CONSTRAINT CategoryName_NotEmpty_ck CHECK (Name != '')
 );
 
 CREATE TABLE Category_Branch
@@ -53,6 +54,7 @@ CREATE TABLE Manufacturer
     Name           ManufacturerName NOT NULL,
     CONSTRAINT UC_Manufacturer_PK PRIMARY KEY (ManufacturerNo),
     CONSTRAINT U__Manufacturer_AK UNIQUE (Name),
+    CONSTRAINT ManufacturerName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE Manufacturer;
 
@@ -67,7 +69,8 @@ CREATE TABLE ManufacturerBrand
     Name           BrandName      NOT NULL,
     CONSTRAINT UC_ManufacturerBrand_PK PRIMARY KEY (ManufacturerNo, BrandNo),
     CONSTRAINT U__ManufacturerBrand_AK UNIQUE (ManufacturerNo, Name),
-    CONSTRAINT Manufacturer_Owns_ManufacturerBrand_fk FOREIGN KEY (ManufacturerNo) REFERENCES Manufacturer (ManufacturerNo)
+    CONSTRAINT Manufacturer_Owns_ManufacturerBrand_fk FOREIGN KEY (ManufacturerNo) REFERENCES Manufacturer (ManufacturerNo),
+    CONSTRAINT ManufacturerBrandName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE ManufacturerBrand;
 
@@ -87,7 +90,9 @@ CREATE TABLE Product
     CONSTRAINT UC_Product_PK PRIMARY KEY (ProductCode),
     CONSTRAINT U__Product_AK UNIQUE (ManufacturerNo, BrandNo, Name),
     CONSTRAINT Category_Classifies_Product_fk FOREIGN KEY (CategoryNo) REFERENCES Category_Leaf (CategoryNo_Leaf),
-    CONSTRAINT ManufacturerBrand_Labels_Product_fk FOREIGN KEY (ManufacturerNo, BrandNo) REFERENCES ManufacturerBrand (ManufacturerNo, BrandNo)
+    CONSTRAINT ManufacturerBrand_Labels_Product_fk FOREIGN KEY (ManufacturerNo, BrandNo) REFERENCES ManufacturerBrand (ManufacturerNo, BrandNo),
+    CONSTRAINT ProductCode_NotEmpty_ck CHECK (ProductCode != ''),
+    CONSTRAINT ProductName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE Product;
 
@@ -116,7 +121,8 @@ CREATE TABLE BundleType
     BundleTypeNo BundleTypeNo   NOT NULL,
     Name         BundleTypeName NOT NULL,
     CONSTRAINT UC_BundleType_PK PRIMARY KEY (BundleTypeNo),
-    CONSTRAINT U__BundleType_AK UNIQUE (Name)
+    CONSTRAINT U__BundleType_AK UNIQUE (Name),
+    CONSTRAINT BundleTypeName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE BundleType;
 

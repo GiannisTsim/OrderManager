@@ -12,7 +12,9 @@ CREATE TABLE Retailer
     IsObsolete _Bool        NOT NULL,
     CONSTRAINT UC_Retailer_PK PRIMARY KEY CLUSTERED (RetailerNo),
     CONSTRAINT U__Retailer_AK1 UNIQUE (VatId),
-    CONSTRAINT U__Retailer_AK2 UNIQUE (Name)
+    CONSTRAINT U__Retailer_AK2 UNIQUE (Name),
+    CONSTRAINT VatId_NotEmpty_ck CHECK (VatId != ''),
+    CONSTRAINT RetailerName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE Retailer;
 
@@ -29,7 +31,8 @@ CREATE TABLE RetailerBranch
     IsObsolete _Bool        NOT NULL,
     CONSTRAINT UC_RetailerBranch_PK PRIMARY KEY CLUSTERED (RetailerNo, BranchNo),
     CONSTRAINT U__RetailerBranch_AK UNIQUE (RetailerNo, Name),
-    CONSTRAINT Retailer_Operates_RetailerBranch_fk FOREIGN KEY (RetailerNo) REFERENCES Retailer (RetailerNo)
+    CONSTRAINT Retailer_Operates_RetailerBranch_fk FOREIGN KEY (RetailerNo) REFERENCES Retailer (RetailerNo),
+    CONSTRAINT RetailerBranchName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE RetailerBranch;
 

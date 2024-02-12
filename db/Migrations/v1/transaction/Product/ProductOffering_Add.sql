@@ -130,7 +130,7 @@ BEGIN
             BEGIN
                 RAISERROR (53503, -1, 1);
             END
-        IF @OfferingTypeCode = 'B' AND @BundleTypeNo IS NULL AND @BundleTypeName IS NULL
+        IF @OfferingTypeCode = 'B' AND @BundleTypeNo IS NULL AND (@BundleTypeName IS NULL OR @BundleTypeName = '')
             BEGIN
                 RAISERROR (53504, -1, 1);
             END
@@ -143,7 +143,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-        
+
     -------------------
     -- Execute block --
     -------------------

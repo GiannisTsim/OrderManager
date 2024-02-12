@@ -3,7 +3,7 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Person stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 51101, 16, 'Person.Email cannot be null.';
+EXEC sp_addmessage 51101, 16, 'Person.Email cannot be null or empty.';
 -- rollback EXEC sp_dropmessage 51101, 'all';
 
 EXEC sp_addmessage 51102, 16, 'Person.EmailConfirmed cannot be null.';

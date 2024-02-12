@@ -71,7 +71,7 @@ BEGIN
             BEGIN
                 RAISERROR (54103, -1, 1);
             END
-        IF @VehicleRegistrationNo IS NULL
+        IF @VehicleRegistrationNo IS NULL OR @VehicleRegistrationNo = ''
             BEGIN
                 RAISERROR (54104, -1, 1);
             END
@@ -96,7 +96,7 @@ BEGIN
     BEGIN CATCH
         THROW;
     END CATCH
-    
+
     -------------------
     -- Execute block --
     -------------------
