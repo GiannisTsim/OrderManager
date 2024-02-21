@@ -5,6 +5,7 @@
     <meta content="width=device-width, initial-scale=1.0" name="viewport"/>
     <title>@ViewData["Title"] - MvcApp</title>
     <link href="~/lib/bootstrap-5.3.2/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="~/lib/bootstrap-icons-1.11.3/bootstrap-icons.min.css" rel="stylesheet"/>
     <link asp-append-version="true" href="~/css/site.css" rel="stylesheet"/>
     <link asp-append-version="true" href="~/OrderManager.MvcApp.styles.css" rel="stylesheet"/>
 </head>
@@ -32,6 +33,7 @@
 </header>
 <div class="container">
     <main class="pb-3" role="main">
+        <partial name="_StatusMessages"/>
         @RenderBody()
     </main>
 </div>

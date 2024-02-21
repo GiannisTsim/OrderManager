@@ -1,9 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Localization;
-using OrderManager.Core.Abstractions.Repositories;
-using OrderManager.Core.Exceptions.Retailer;
-using OrderManager.Core.Models.Retailer;
+using OrderManager.Core.Retailer.Abstractions;
+using OrderManager.Core.Retailer.Exceptions;
+using OrderManager.Core.Retailer.Models;
 using OrderManager.MvcApp.Areas.Administration.Models.Retailer;
+using OrderManager.MvcApp.Constants;
 using OrderManager.MvcApp.Filters;
 
 namespace OrderManager.MvcApp.Areas.Administration.Controllers;
@@ -41,7 +42,7 @@ public class RetailerController : Controller
         {
             Retailers = (await retailerTask).Select
             (
-                (retailer, index) => new IndexViewModel.Retailer
+                (retailer, index) => new IndexViewModel.RetailerViewItem
                 (
                     (pageNo - 1) * pageSize + index + 1,
                     retailer.RetailerNo,
@@ -74,111 +75,120 @@ public class RetailerController : Controller
     }
 
     [HttpGet("add")]
+    [ModelStateImport]
     public IActionResult Add()
     {
-        var viewModel = new AddViewModel(new AddInputModel { Name = null, VatId = null });
+        var viewModel = new AddViewModel { AddInput = new AddViewModel.AddInputModel { Name = null, VatId = null } };
         return View(viewModel);
     }
 
     [HttpPost("add")]
-    [TestActionFilter]
-    [TestExceptionFilter]
-    // [TestExceptionFilter<RetailerDuplicateVatIdException>]
-    // [TypeFilter(typeof(TempDataExceptionFilter<RetailerDuplicateVatIdException>), Arguments = ["", "foo"])]
-    [ModelStateErrorFromException<RetailerDuplicateVatIdException>(PropagateException = true)]
-    [ModelStateErrorFromException<RetailerDuplicateNameException>]
-    // [TempDataExceptionFilter<RetailerDuplicateVatIdException>(Message = "fooMessage")]
-    // [TempDataExceptionFilter<RetailerDuplicateNameException>(Message = "barMessage")]
+    [ModelStateExport]
     public async Task<IActionResult> Add(
-        [FromForm, Bind(Prefix = nameof(AddViewModel.AddInputModel))]
-        AddInputModel inputModel
+        [FromForm, Bind(Prefix = nameof(AddViewModel.AddInput))]
+        AddViewModel.AddInputModel addInput
     )
     {
-        if (!ModelState.IsValid) return View();
+        if (!ModelState.IsValid) return RedirectToAction();
 
-        // try
-        // {
-        var command = new RetailerAddCommand
-        (
-            inputModel.VatId ?? throw new ArgumentNullException(),
-            inputModel.Name ?? throw new ArgumentNullException()
-        );
-        var retailerNo = await _retailerRepository.AddAsync(command);
-        return RedirectToAction(nameof(Details), new { RetailerNo = retailerNo });
-        // }
-        // catch (RetailerDuplicateVatIdException)
-        // {
-        //     ModelState.AddModelError
-        //     (
-        //         $"{nameof(AddViewModel.AddInputModel)}.{nameof(AddViewModel.AddInputModel.VatId)}",
-        //         localizer["RetailerDuplicateVatId"]
-        //     );
-        //     return View();
-        // }
-        // catch (RetailerDuplicateNameException)
-        // {
-        //     ModelState.AddModelError
-        //     (
-        //         $"{nameof(AddViewModel.AddInputModel)}.{nameof(AddViewModel.AddInputModel.Name)}",
-        //         localizer["RetailerDuplicateName"]
-        //     );
-        //     return View();
-        // }
+        try
+        {
+            var addCommand = new RetailerAddCommand(addInput.VatId!, addInput.Name!);
+            var retailerNo = await _retailerRepository.AddAsync(addCommand);
+            TempData[TempDataKeys.StatusMessageSuccess] = _localizer["RetailerAddSuccess"].Value;
+            return RedirectToAction(nameof(Details), new { RetailerNo = retailerNo });
+        }
+        catch (RetailerDuplicateVatIdException)
+        {
+            ModelState.AddModelError
+            (
+                $"{nameof(AddViewModel.AddInput)}.{nameof(AddViewModel.AddInput.VatId)}",
+                _localizer["RetailerDuplicateVatId"]
+            );
+            return RedirectToAction();
+        }
+        catch (RetailerDuplicateNameException)
+        {
+            ModelState.AddModelError
+            (
+                $"{nameof(AddViewModel.AddInput)}.{nameof(AddViewModel.AddInput.Name)}",
+                _localizer["RetailerDuplicateName"]
+            );
+            return RedirectToAction();
+        }
     }
 
     [HttpGet("{retailerNo:int}/modify")]
+    [ModelStateImport]
     public async Task<IActionResult> Modify([FromRoute] int retailerNo)
     {
-        var retailer = await _retailerRepository.FindByRetailerNoAsync((int)retailerNo);
+        var retailer = await _retailerRepository.FindByRetailerNoAsync(retailerNo);
         if (retailer == null) return NotFound();
 
         var viewModel = new ModifyViewModel
-        (
-            retailer,
-            new ModifyInputModel
+        {
+            Retailer = retailer,
+            ModifyInput = new ModifyViewModel.ModifyInputModel
             {
                 UpdatedDtm = retailer.UpdatedDtm,
                 VatId = retailer.VatId,
                 Name = retailer.Name
             }
-        );
+        };
         return View(viewModel);
     }
 
     [HttpPost("{retailerNo:int}/modify")]
+    [ModelStateExport]
     public async Task<IActionResult> Modify(
         [FromRoute] int retailerNo,
-        [FromForm, Bind(Prefix = nameof(ModifyViewModel.ModifyInputModel))]
-        ModifyInputModel inputModel
+        [FromForm, Bind(Prefix = nameof(ModifyViewModel.ModifyInput))]
+        ModifyViewModel.ModifyInputModel modifyInput
     )
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) return RedirectToAction();
+
+        try
         {
-            var retailer = await _retailerRepository.FindByRetailerNoAsync(retailerNo);
-            if (retailer == null) return NotFound();
-
-            var viewModel = new ModifyViewModel
+            var modifyCommand = new RetailerModifyCommand
             (
-                retailer,
-                new ModifyInputModel
-                {
-                    UpdatedDtm = retailer.UpdatedDtm,
-                    VatId = retailer.VatId,
-                    Name = retailer.Name
-                }
+                retailerNo,
+                (DateTimeOffset)modifyInput.UpdatedDtm!,
+                modifyInput.VatId!,
+                modifyInput.Name!
             );
-            return View(viewModel);
+            await _retailerRepository.ModifyAsync(modifyCommand);
+            TempData[TempDataKeys.StatusMessageSuccess] = _localizer["RetailerModifySuccess"].Value;
+            return RedirectToAction(nameof(Details), new { retailerNo });
         }
-
-        var command = new RetailerModifyCommand
-        (
-            retailerNo,
-            inputModel.UpdatedDtm ?? throw new ArgumentNullException(),
-            inputModel.VatId ?? throw new ArgumentNullException(),
-            inputModel.Name ?? throw new ArgumentNullException()
-        );
-        await _retailerRepository.ModifyAsync(command);
-        return RedirectToAction(nameof(Details), new { retailerNo });
+        catch (RetailerDuplicateVatIdException)
+        {
+            ModelState.AddModelError
+            (
+                $"{nameof(ModifyViewModel.ModifyInput)}.{nameof(ModifyViewModel.ModifyInput.VatId)}",
+                _localizer["RetailerDuplicateVatId"]
+            );
+            return RedirectToAction();
+        }
+        catch (RetailerDuplicateNameException)
+        {
+            ModelState.AddModelError
+            (
+                $"{nameof(ModifyViewModel.ModifyInput)}.{nameof(ModifyViewModel.ModifyInput.Name)}",
+                _localizer["RetailerDuplicateName"]
+            );
+            return RedirectToAction();
+        }
+        catch (RetailerNotFoundException)
+        {
+            TempData[TempDataKeys.StatusMessageError] = _localizer["RetailerNotFound"].Value;
+            return RedirectToAction(nameof(Index));
+        }
+        catch (RetailerCurrencyLostException)
+        {
+            TempData[TempDataKeys.StatusMessageError] = _localizer["RetailerCurrencyLost"].Value;
+            return RedirectToAction(nameof(Details), new { retailerNo });
+        }
     }
 
     [HttpGet("{retailerNo:int}/obsolete")]
@@ -188,13 +198,13 @@ public class RetailerController : Controller
         if (retailer == null) return NotFound();
 
         var model = new ObsoleteViewModel
-        (
-            retailer,
-            new ObsoleteInputModel
+        {
+            Retailer = retailer,
+            ObsoleteInput = new ObsoleteViewModel.ObsoleteInputModel
             {
                 UpdatedDtm = retailer.UpdatedDtm
             }
-        );
+        };
         return View(model);
     }
 
@@ -202,22 +212,28 @@ public class RetailerController : Controller
     [HttpPost("{retailerNo:int}/obsolete")]
     public async Task<IActionResult> Obsolete(
         [FromRoute] int retailerNo,
-        [FromForm, Bind(Prefix = nameof(ObsoleteViewModel.ObsoleteInputModel))]
-        ObsoleteInputModel model
+        [FromForm, Bind(Prefix = nameof(ObsoleteViewModel.ObsoleteInput))]
+        ObsoleteViewModel.ObsoleteInputModel obsoleteInput
     )
     {
-        if (!ModelState.IsValid)
+        if (!ModelState.IsValid) return RedirectToAction(nameof(Details), new { retailerNo });
+
+        try
         {
+            var obsoleteCommand = new RetailerObsoleteCommand(retailerNo, (DateTimeOffset)obsoleteInput.UpdatedDtm!);
+            await _retailerRepository.ObsoleteAsync(obsoleteCommand);
+            return RedirectToAction(nameof(Index));
+        }
+        catch (RetailerNotFoundException)
+        {
+            TempData[TempDataKeys.StatusMessageError] = _localizer["RetailerNotFound"].Value;
+            return RedirectToAction(nameof(Index));
+        }
+        catch (RetailerCurrencyLostException)
+        {
+            TempData[TempDataKeys.StatusMessageError] = _localizer["RetailerCurrencyLost"].Value;
             return RedirectToAction(nameof(Details), new { retailerNo });
         }
-
-        var retailerObsolete = new RetailerObsoleteCommand
-        (
-            retailerNo,
-            model.UpdatedDtm ?? throw new ArgumentNullException(nameof(model.UpdatedDtm))
-        );
-        await _retailerRepository.ObsoleteAsync(retailerObsolete);
-        return RedirectToAction(nameof(Index));
     }
 
     [HttpPost("validate/vatId")]

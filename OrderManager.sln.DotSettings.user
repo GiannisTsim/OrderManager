@@ -16,13 +16,21 @@
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=F32CC52C_002DD73B_002D4547_002DA443_002DE6AEA91881F5_002Fd_003AComponents_002Fd_003AAdmin_002Fd_003APages_002Ff_003ARetailers_002Erazor/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=F32CC52C_002DD73B_002D4547_002DA443_002DE6AEA91881F5_002Fd_003AComponents_002Fd_003APages_002Fd_003AAdmin_002Fd_003APages_002Ff_003ARetailerDetails_002Erazor/@EntryIndexedValue">ExplicitlyExcluded</s:String>
 	<s:String x:Key="/Default/CodeInspection/ExcludedFiles/FilesAndFoldersToSkip2/=F32CC52C_002DD73B_002D4547_002DA443_002DE6AEA91881F5_002Fd_003AComponents_002Fd_003APages_002Fd_003AAdmin_002Fd_003APages_002Ff_003ARetailers_002Erazor/@EntryIndexedValue">ExplicitlyExcluded</s:String>
+	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=MvcApp_002FResources_002FAreas_002FAdministration_002FControllers_002FRetailerController/@EntryIndexedValue">True</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=src_002FCore_002FResources_002FModels_002FRetailer_002FRetailerAdd/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/CheckedGroups/=src_002FMvcApp_002FResources_002FAreas_002FAdministration_002FControllers_002FRetailerController/@EntryIndexedValue">True</s:Boolean>
+	
+	<s:String x:Key="/Default/ResxEditorPersonal/DisabledLanguages/@EntryValue">en</s:String>
+	
 	
 	
 	
 	
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/Initialized/@EntryValue">True</s:Boolean>
 	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyErrors/@EntryValue">False</s:Boolean>
+	<s:Boolean x:Key="/Default/ResxEditorPersonal/ShowOnlyStringResources/@EntryValue">False</s:Boolean>
 	
 	
 	</wpf:ResourceDictionary>

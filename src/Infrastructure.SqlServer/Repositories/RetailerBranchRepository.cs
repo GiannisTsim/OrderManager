@@ -1,8 +1,8 @@
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using OrderManager.Core.Abstractions.Repositories;
-using OrderManager.Core.Models.RetailerBranch;
+using OrderManager.Core.Retailer.Abstractions;
+using OrderManager.Core.Retailer.Models;
 
 namespace OrderManager.Infrastructure.SqlServer.Repositories;
 

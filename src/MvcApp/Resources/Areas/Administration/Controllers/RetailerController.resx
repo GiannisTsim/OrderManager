@@ -24,12 +24,21 @@
         </value>
     </resheader>
     <data name="RetailerDuplicateVatId" xml:space="preserve">
-        <value>VAT identification number is already in use.</value>
+        <value>There is already a retailer with the same VAT identification number.</value>
     </data>
     <data name="RetailerDuplicateName" xml:space="preserve">
-        <value>Name is already in use.</value>
+        <value>There is already a retailer with the same name.</value>
     </data>
     <data name="RetailerCurrencyLost" xml:space="preserve">
         <value>Retailer was already modified by another user.</value>
+    </data>
+    <data name="RetailerModifySuccess" xml:space="preserve">
+        <value>Retailer modified successfully.</value>
+    </data>
+    <data name="RetailerAddSuccess" xml:space="preserve">
+        <value>Retailer added successfully.</value>
+    </data>
+    <data name="RetailerNotFound" xml:space="preserve">
+        <value>Retailer does not exist.</value>
     </data>
 </root>

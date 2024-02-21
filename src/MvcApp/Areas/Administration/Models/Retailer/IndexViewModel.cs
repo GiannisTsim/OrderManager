@@ -4,7 +4,7 @@ namespace OrderManager.MvcApp.Areas.Administration.Models.Retailer;
 
 public record IndexViewModel
 {
-    public record Retailer(
+    public record RetailerViewItem(
         int OrdinalNo,
         int RetailerNo,
         DateTimeOffset UpdatedDtm,
@@ -14,7 +14,7 @@ public record IndexViewModel
         int BranchCount
     );
 
-    public required IEnumerable<Retailer> Retailers { get; init; }
+    public required IEnumerable<RetailerViewItem> Retailers { get; init; }
 
     [Display(Name = "Search", Prompt = "Search for name of VAT id...")]
     public required string? SearchTerm { get; init; }

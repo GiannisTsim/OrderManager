@@ -2,8 +2,8 @@
 <project version="4">
   <component name="UserContentModel">
     <attachedFolders>
-      <Path>Database</Path>
-      <Path>Documentation</Path>
+      <Path>db</Path>
+      <Path>docs</Path>
     </attachedFolders>
     <explicitIncludes />
     <explicitExcludes />

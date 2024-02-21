@@ -2,9 +2,9 @@ using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
-using OrderManager.Core.Abstractions.Repositories;
-using OrderManager.Core.Exceptions.Retailer;
-using OrderManager.Core.Models.Retailer;
+using OrderManager.Core.Retailer.Abstractions;
+using OrderManager.Core.Retailer.Exceptions;
+using OrderManager.Core.Retailer.Models;
 using OrderManager.Infrastructure.SqlServer.Constants;
 
 namespace OrderManager.Infrastructure.SqlServer.Repositories;
@@ -18,7 +18,7 @@ public class RetailerRepository : IRetailerRepository
         _configuration = configuration;
     }
 
-    public async Task<IEnumerable<Retailer>> GetAsync(
+    public async Task<IEnumerable<RetailerDetails>> GetAsync(
         string? searchTerm = null,
         string? sortColumn = null,
         bool? isDescending = false,
@@ -27,7 +27,7 @@ public class RetailerRepository : IRetailerRepository
     )
     {
         await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailers = await connection.QueryAsync<Retailer>
+        var retailers = await connection.QueryAsync<RetailerDetails>
         (
             """
             SELECT RetailerNo,
@@ -73,10 +73,10 @@ public class RetailerRepository : IRetailerRepository
         return totalResultCount;
     }
 
-    public async Task<Retailer?> FindByRetailerNoAsync(int retailerNo)
+    public async Task<RetailerDetails?> FindByRetailerNoAsync(int retailerNo)
     {
         await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
         (
             """
             SELECT RetailerNo,
@@ -93,10 +93,10 @@ public class RetailerRepository : IRetailerRepository
         return retailer;
     }
 
-    public async Task<Retailer?> FindByVatIdAsync(string vatId)
+    public async Task<RetailerDetails?> FindByVatIdAsync(string vatId)
     {
         await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
         (
             """
             SELECT RetailerNo,
@@ -113,10 +113,10 @@ public class RetailerRepository : IRetailerRepository
         return retailer;
     }
 
-    public async Task<Retailer?> FindByNameAsync(string name)
+    public async Task<RetailerDetails?> FindByNameAsync(string name)
     {
         await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<Retailer>
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
         (
             """
             SELECT RetailerNo,
@@ -192,6 +192,14 @@ public class RetailerRepository : IRetailerRepository
             var retailerNo = p.Get<int>("@RetailerNo");
             return retailerNo;
         }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidVatId)
+        {
+            throw new RetailerInvalidVatIdException(retailer.VatId, ex);
+        }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidName)
+        {
+            throw new RetailerInvalidNameException(retailer.Name, ex);
+        }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateVatId)
         {
             throw new RetailerDuplicateVatIdException(retailer.VatId, ex);
@@ -206,15 +214,22 @@ public class RetailerRepository : IRetailerRepository
     {
         await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
 
-
         try
         {
             await connection.ExecuteAsync
             (
                 "Retailer_Modify_tr",
-                new { retailer.RetailerNo, retailer.UpdatedDtm, retailer.VatId, Name = retailer.Name },
+                new { retailer.RetailerNo, retailer.UpdatedDtm, retailer.VatId, retailer.Name },
                 commandType: CommandType.StoredProcedure
             );
+        }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidVatId)
+        {
+            throw new RetailerInvalidVatIdException(retailer.VatId, ex);
+        }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidName)
+        {
+            throw new RetailerInvalidNameException(retailer.Name, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
@@ -243,6 +258,29 @@ public class RetailerRepository : IRetailerRepository
             await connection.ExecuteAsync
             (
                 "Retailer_Obsolete_tr",
+                new { retailer.RetailerNo, retailer.UpdatedDtm },
+                commandType: CommandType.StoredProcedure
+            );
+        }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
+        {
+            throw new RetailerNotFoundException(retailer.RetailerNo, ex);
+        }
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
+        {
+            throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
+        }
+    }
+
+    public async Task RestoreAsync(RetailerRestoreCommand retailer)
+    {
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
+
+        try
+        {
+            await connection.ExecuteAsync
+            (
+                "Retailer_Restore_tr",
                 new { retailer.RetailerNo, retailer.UpdatedDtm },
                 commandType: CommandType.StoredProcedure
             );

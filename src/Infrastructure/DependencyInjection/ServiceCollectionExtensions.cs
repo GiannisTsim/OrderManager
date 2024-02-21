@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using OrderManager.Core.Abstractions.Services;
+using OrderManager.Core.Common.Abstractions;
 using OrderManager.Infrastructure.Services;
 
 namespace OrderManager.Infrastructure.DependencyInjection;

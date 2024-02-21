@@ -9,18 +9,18 @@
 
     <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
 
-    <input asp-for="ModifyInputModel.UpdatedDtm" asp-format="{0:o}"/>
+    <input asp-for="ModifyInput.UpdatedDtm" asp-format="{0:o}"/>
 
     <div class="mb-3">
-        <label asp-for="ModifyInputModel.VatId" class="form-label"></label>
-        <input asp-for="ModifyInputModel.VatId" class="form-control"/>
-        <span asp-validation-for="ModifyInputModel.VatId" class="text-danger"></span>
+        <label asp-for="ModifyInput.VatId" class="form-label"></label>
+        <input asp-for="ModifyInput.VatId" class="form-control"/>
+        <span asp-validation-for="ModifyInput.VatId" class="text-danger"></span>
     </div>
 
     <div class="mb-3">
-        <label asp-for="ModifyInputModel.Name" class="form-label"></label>
-        <input asp-for="ModifyInputModel.Name" class="form-control"/>
-        <span asp-validation-for="ModifyInputModel.Name" class="text-danger"></span>
+        <label asp-for="ModifyInput.Name" class="form-label"></label>
+        <input asp-for="ModifyInput.Name" class="form-control"/>
+        <span asp-validation-for="ModifyInput.Name" class="text-danger"></span>
     </div>
 
     <button class="btn btn-secondary" type="reset">Reset</button>

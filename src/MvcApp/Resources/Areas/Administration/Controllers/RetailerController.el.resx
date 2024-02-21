@@ -16,9 +16,21 @@
         </value>
     </resheader>
     <data name="RetailerDuplicateVatId" xml:space="preserve">
-        <value>Το ΑΦΜ χρησιμοποιείτε ήδη.</value>
+        <value>Υπάρχει ήδη ένας προμηθευτής με αυτό το ΑΦΜ.</value>
     </data>
     <data name="RetailerDuplicateName" xml:space="preserve">
-        <value>Το όνομα χρησιμοποιείτε ήδη.</value>
+        <value>Υπάρχει ήδη ένας προμηθευτής με αυτό το όνομα.</value>
+    </data>
+    <data name="RetailerCurrencyLost" xml:space="preserve">
+        <value>Ο προμηθευτής έχει ήδη τροποποιηθεί από κάποιον άλλο χρήστη.</value>
+    </data>
+    <data name="RetailerAddSuccess" xml:space="preserve">
+        <value>Ο προμηθευτής προστέθηκε επιτυχώς.</value>
+    </data>
+    <data name="RetailerModifySuccess" xml:space="preserve">
+        <value>Ο προμηθευτής τροποποιήθηκε επιτυχώς.</value>
+    </data>
+    <data name="RetailerNotFound" xml:space="preserve">
+        <value>Ο προμηθευτής δεν βρέθηκε.</value>
     </data>
 </root>

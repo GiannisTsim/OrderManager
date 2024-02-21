@@ -1,5 +1,5 @@
 using Microsoft.Extensions.DependencyInjection;
-using OrderManager.Core.Abstractions.Repositories;
+using OrderManager.Core.Retailer.Abstractions;
 using OrderManager.Infrastructure.SqlServer.Repositories;
 
 namespace OrderManager.Infrastructure.SqlServer.DependencyInjection;
