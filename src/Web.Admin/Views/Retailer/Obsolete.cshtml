@@ -1,0 +1,7 @@
+@model OrderManager.Web.Admin.Models.Retailer.ObsoleteViewModel
+
+<h3>Are you sure you want to delete retailer "@Model.Retailer.Name" (@Model.Retailer.TaxId) ?</h3>
+
+<partial model="@Model.ObsoleteInput" name="Obsolete.Form"/>
+
+<a asp-action="Index">Back to List</a>

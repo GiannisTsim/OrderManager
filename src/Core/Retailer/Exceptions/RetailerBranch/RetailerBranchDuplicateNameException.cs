@@ -1,6 +1,5 @@
-namespace OrderManager.Core.Retailer.Exceptions;
+namespace OrderManager.Core.Retailer.Exceptions.RetailerBranch;
 
-[Serializable]
 public class RetailerBranchDuplicateNameException : Exception
 {
     private const string DefaultMessageTemplate = "Retailer '{0}' already has a branch with name '{1}'.";

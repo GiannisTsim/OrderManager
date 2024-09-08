@@ -5,7 +5,7 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Retailer_Add_vtr
 (
-    @VatId VatId,
+    @TaxId TaxId,
     @Name  RetailerName
 ) AS
 BEGIN
@@ -19,10 +19,10 @@ BEGIN
         (
             SELECT 1
             FROM Retailer
-            WHERE VatId = @VatId
+            WHERE TaxId = @TaxId
         )
         BEGIN
-            RAISERROR (52103, -1, @State, @VatId);
+            RAISERROR (52103, -1, @State, @TaxId);
         END
     IF EXISTS
         (
@@ -46,7 +46,7 @@ GO
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE PROCEDURE Retailer_Add_tr
 (
-    @VatId      VatId,
+    @TaxId      TaxId,
     @Name       RetailerName,
     @RetailerNo RetailerNo = NULL OUTPUT
 ) AS
@@ -62,7 +62,7 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @VatId IS NULL OR @VatId = ''
+        IF @TaxId IS NULL OR @TaxId = ''
             BEGIN
                 RAISERROR (52101, -1 , 1);
             END
@@ -73,7 +73,7 @@ BEGIN
 
         -- Offline constraint validation (no locks held) --
         SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-        EXEC Retailer_Add_vtr @VatId, @Name;
+        EXEC Retailer_Add_vtr @TaxId, @Name;
 
     END TRY
     BEGIN CATCH
@@ -88,15 +88,15 @@ BEGIN
         SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
         -- Online constraint validation (holding locks) --
-        EXEC Retailer_Add_vtr @VatId, @Name;
+        EXEC Retailer_Add_vtr @TaxId, @Name;
 
         -- Database updates --
         SET @RetailerNo = (
                               SELECT COALESCE(MAX(RetailerNo) + 1, 1)
                               FROM Retailer
         );
-        INSERT INTO Retailer (RetailerNo, VatId, Name, UpdatedDtm, IsObsolete)
-        VALUES (@RetailerNo, @VatId, @Name, SYSDATETIMEOFFSET(), 0);
+        INSERT INTO Retailer (RetailerNo, TaxId, Name, UpdatedDtm, IsObsolete)
+        VALUES (@RetailerNo, @TaxId, @Name, SYSDATETIMEOFFSET(), 0);
 
         -- Commit --
         COMMIT TRANSACTION @ProcName;

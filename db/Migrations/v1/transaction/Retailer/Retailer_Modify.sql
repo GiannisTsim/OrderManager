@@ -7,7 +7,7 @@ CREATE PROCEDURE Retailer_Modify_vtr
 (
     @RetailerNo RetailerNo,
     @UpdatedDtm _CurrencyDtm,
-    @VatId      VatId,
+    @TaxId      TaxId,
     @Name       RetailerName
 ) AS
 BEGIN
@@ -35,11 +35,11 @@ BEGIN
         (
             SELECT 1
             FROM Retailer
-            WHERE VatId = @VatId
+            WHERE TaxId = @TaxId
               AND RetailerNo != @RetailerNo
         )
         BEGIN
-            RAISERROR (52103, -1, @State, @VatId);
+            RAISERROR (52103, -1, @State, @TaxId);
         END
     IF EXISTS
         (
@@ -66,7 +66,7 @@ CREATE PROCEDURE Retailer_Modify_tr
 (
     @RetailerNo RetailerNo,
     @UpdatedDtm _CurrencyDtm,
-    @VatId      VatId,
+    @TaxId      TaxId,
     @Name       RetailerName
 ) AS
 BEGIN
@@ -81,7 +81,7 @@ BEGIN
         EXEC Xact_Integrity_Check;
 
         -- Parameter checks --
-        IF @VatId IS NULL OR @VatId = ''
+        IF @TaxId IS NULL OR @TaxId = ''
             BEGIN
                 RAISERROR (52101, -1 , 1);
             END
@@ -92,7 +92,7 @@ BEGIN
 
         -- Offline constraint validation (no locks held) --
         SET TRANSACTION ISOLATION LEVEL READ COMMITTED;
-        EXEC Retailer_Modify_vtr @RetailerNo, @UpdatedDtm, @VatId, @Name;
+        EXEC Retailer_Modify_vtr @RetailerNo, @UpdatedDtm, @TaxId, @Name;
 
     END TRY
     BEGIN CATCH
@@ -107,12 +107,12 @@ BEGIN
         SET TRANSACTION ISOLATION LEVEL SERIALIZABLE;
 
         -- Online constraint validation (holding locks) --
-        EXEC Retailer_Modify_vtr @RetailerNo, @UpdatedDtm, @VatId, @Name;
+        EXEC Retailer_Modify_vtr @RetailerNo, @UpdatedDtm, @TaxId, @Name;
 
         -- Database updates --
         UPDATE Retailer
         SET Name       = @Name,
-            VatId      = @VatId,
+            TaxId      = @TaxId,
             UpdatedDtm = SYSDATETIMEOFFSET()
         WHERE RetailerNo = @RetailerNo
           AND UpdatedDtm = @UpdatedDtm;

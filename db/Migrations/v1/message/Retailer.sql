@@ -3,13 +3,13 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 -- changeset ${AUTHOR}:Retailer stripComments:false
 -- ------------------------------------------------------------------------------------------------------------------ --
-EXEC sp_addmessage 52101, 16, 'Retailer.VatId cannot be null or whitespace.';
+EXEC sp_addmessage 52101, 16, 'Retailer.TaxId cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 52101, 'all';
 
 EXEC sp_addmessage 52102, 16, 'Retailer.Name cannot be null or whitespace.';
 -- rollback EXEC sp_dropmessage 52102, 'all';
 
-EXEC sp_addmessage 52103, 16, 'Retailer[VatId=''%s''] already exists.';
+EXEC sp_addmessage 52103, 16, 'Retailer[TaxId=''%s''] already exists.';
 -- rollback EXEC sp_dropmessage 52103, 'all';
 
 EXEC sp_addmessage 52104, 16, 'Retailer[Name=''%s''] already exists.';

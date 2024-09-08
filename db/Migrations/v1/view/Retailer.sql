@@ -5,7 +5,7 @@
 -- ------------------------------------------------------------------------------------------------------------------ --
 CREATE VIEW Retailer_V AS
 SELECT RetailerNo,
-       VatId,
+       TaxId,
        Name,
        UpdatedDtm,
        IsObsolete,

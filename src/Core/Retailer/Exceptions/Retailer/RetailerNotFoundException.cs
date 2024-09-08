@@ -1,6 +1,5 @@
-namespace OrderManager.Core.Retailer.Exceptions;
+namespace OrderManager.Core.Retailer.Exceptions.Retailer;
 
-[Serializable]
 public class RetailerNotFoundException : Exception
 {
     private const string DefaultMessageTemplate = "Retailer '{0}' does not exist.";

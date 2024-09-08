@@ -3,7 +3,8 @@ using Dapper;
 using Microsoft.Data.SqlClient;
 using Microsoft.Extensions.Configuration;
 using OrderManager.Core.Retailer.Abstractions;
-using OrderManager.Core.Retailer.Exceptions;
+using OrderManager.Core.Retailer.Commands.Retailer;
+using OrderManager.Core.Retailer.Exceptions.Retailer;
 using OrderManager.Core.Retailer.Models;
 using OrderManager.Infrastructure.SqlServer.Constants;
 
@@ -18,30 +19,29 @@ public class RetailerRepository : IRetailerRepository
         _configuration = configuration;
     }
 
-    public async Task<IEnumerable<RetailerDetails>> GetAsync(
+    // TODO: Simplify query string or move in database function
+    public async Task<IEnumerable<RetailerDetails>> GetDetailsAsync(
         string? searchTerm = null,
         string? sortColumn = null,
         bool? isDescending = false,
         int? pageNo = 1,
-        int? pageSize = 10
-    )
+        int? pageSize = 10)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailers = await connection.QueryAsync<RetailerDetails>
-        (
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var retailers = await connection.QueryAsync<RetailerDetails>(
             """
             SELECT RetailerNo,
-                   VatId,
+                   TaxId,
                    Name,
                    UpdatedDtm,
                    IsObsolete,
                    BranchCount
             FROM Retailer_V
-            WHERE (VatId LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
+            WHERE (TaxId LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
                OR (Name LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
             ORDER BY CASE WHEN @SortColumn IS NULL THEN RetailerNo END,
-                     CASE WHEN @SortColumn = 'VatId' AND @IsDescending = 0 THEN VatId END,
-                     CASE WHEN @SortColumn = 'VatId' AND @IsDescending = 1 THEN VatId END DESC,
+                     CASE WHEN @SortColumn = 'TaxId' AND @IsDescending = 0 THEN TaxId END,
+                     CASE WHEN @SortColumn = 'TaxId' AND @IsDescending = 1 THEN TaxId END DESC,
                      CASE WHEN @SortColumn = 'Name' AND @IsDescending = 0 THEN Name END,
                      CASE WHEN @SortColumn = 'Name' AND @IsDescending = 1 THEN Name END DESC
             OFFSET (@PageNo - 1) * @PageSize ROWS FETCH NEXT @PageSize ROWS ONLY
@@ -55,17 +55,15 @@ public class RetailerRepository : IRetailerRepository
         return retailers;
     }
 
-    public async Task<int> GetTotalResultCountAsync(
-        string? searchTerm = null
-    )
+    // TODO: Simplify query string or move in database function
+    public async Task<int> GetTotalResultCountAsync(string? searchTerm = null)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var totalResultCount = await connection.ExecuteScalarAsync<int>
-        (
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var totalResultCount = await connection.ExecuteScalarAsync<int>(
             """
             SELECT COUNT(*)
             FROM Retailer_V
-            WHERE (VatId LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
+            WHERE (TaxId LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
                OR (Name LIKE @SearchTerm + '%' OR @SearchTerm IS NULL)
             """,
             new { SearchTerm = searchTerm }
@@ -73,14 +71,13 @@ public class RetailerRepository : IRetailerRepository
         return totalResultCount;
     }
 
-    public async Task<RetailerDetails?> FindByRetailerNoAsync(int retailerNo)
+    public async Task<RetailerDetails?> FindDetailsByRetailerNoAsync(int retailerNo)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
-        (
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>(
             """
             SELECT RetailerNo,
-                   VatId,
+                   TaxId,
                    Name,
                    UpdatedDtm,
                    IsObsolete,
@@ -93,39 +90,31 @@ public class RetailerRepository : IRetailerRepository
         return retailer;
     }
 
-    public async Task<RetailerDetails?> FindByVatIdAsync(string vatId)
+    public async Task<RetailerSimple?> FindByTaxIdAsync(string taxId)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
-        (
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerSimple>(
             """
             SELECT RetailerNo,
-                   VatId,
-                   Name,
-                   UpdatedDtm,
-                   IsObsolete,
-                   BranchCount
-            FROM Retailer_V
-            WHERE VatId = @VatId
+                   TaxId,
+                   Name
+            FROM Retailer
+            WHERE TaxId = @TaxId
             """,
-            new { VatId = vatId }
+            new { TaxId = taxId }
         );
         return retailer;
     }
 
-    public async Task<RetailerDetails?> FindByNameAsync(string name)
+    public async Task<RetailerSimple?> FindByNameAsync(string name)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>
-        (
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        var retailer = await connection.QuerySingleOrDefaultAsync<RetailerSimple>(
             """
             SELECT RetailerNo,
-                   VatId,
-                   Name,
-                   UpdatedDtm,
-                   IsObsolete,
-                   BranchCount
-            FROM Retailer_V
+                   TaxId,
+                   Name
+            FROM Retailer
             WHERE Name = @Name
             """,
             new { Name = name }
@@ -133,165 +122,111 @@ public class RetailerRepository : IRetailerRepository
         return retailer;
     }
 
-    public async Task<bool> VerifyExistenceByVatIdAsync(string vatId)
+    public async Task<int> AddAsync(RetailerAddCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailerExists = await connection.ExecuteScalarAsync<bool>
-        (
-            """
-            SELECT CASE WHEN EXISTS (SELECT 1 FROM Retailer WHERE VatId = @VatId) THEN 1 ELSE 0 END
-            """,
-            new { VatId = vatId }
-        );
-        return retailerExists;
-    }
-
-    public async Task<bool> VerifyExistenceByNameAsync(string name)
-    {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailerExists = await connection.ExecuteScalarAsync<bool>
-        (
-            """
-            SELECT COALESCE ((SELECT 1 FROM Retailer WHERE Name = @Name), 0)
-            """,
-            new { Name = name }
-        );
-        return retailerExists;
-    }
-
-    public async Task<bool> VerifyCurrencyAsync(int retailerNo, DateTimeOffset updatedDtm)
-    {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-        var retailerIsCurrent = await connection.ExecuteScalarAsync<bool>
-        (
-            """
-            SELECT COALESCE((SELECT 1 FROM Retailer WHERE RetailerNo = @RetailerNo AND UpdatedDtm = @UpdatedDtm), 0);
-            """,
-            new { RetailerNo = retailerNo, UpdatedDtm = updatedDtm }
-        );
-
-        return retailerIsCurrent;
-    }
-
-    public async Task<int> AddAsync(RetailerAddCommand retailer)
-    {
-        var p = new DynamicParameters(retailer);
-        p.Add("@RetailerNo", DbType.Int32, direction: ParameterDirection.Output);
-
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         try
         {
-            await connection.ExecuteAsync
-            (
-                "Retailer_Add_tr",
-                p,
-                commandType: CommandType.StoredProcedure
-            );
-
+            var p = new DynamicParameters(new { command.TaxId, command.Name });
+            p.Add("@RetailerNo", DbType.Int32, direction: ParameterDirection.Output);
+            await connection.ExecuteAsync("Retailer_Add_tr", p, commandType: CommandType.StoredProcedure);
             var retailerNo = p.Get<int>("@RetailerNo");
             return retailerNo;
         }
-        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidTaxId)
         {
-            throw new RetailerInvalidVatIdException(retailer.VatId, ex);
+            throw new RetailerInvalidTaxIdException(command.TaxId, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidName)
         {
-            throw new RetailerInvalidNameException(retailer.Name, ex);
+            throw new RetailerInvalidNameException(command.Name, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateTaxId)
         {
-            throw new RetailerDuplicateVatIdException(retailer.VatId, ex);
+            throw new RetailerDuplicateTaxIdException(command.TaxId, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateName)
         {
-            throw new RetailerDuplicateNameException(retailer.Name, ex);
+            throw new RetailerDuplicateNameException(command.Name, ex);
         }
     }
 
-    public async Task ModifyAsync(RetailerModifyCommand retailer)
+    public async Task ModifyAsync(RetailerModifyCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "Retailer_Modify_tr",
-                new { retailer.RetailerNo, retailer.UpdatedDtm, retailer.VatId, retailer.Name },
+                new { command.RetailerNo, command.UpdatedDtm, command.TaxId, command.Name },
                 commandType: CommandType.StoredProcedure
             );
         }
-        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidTaxId)
         {
-            throw new RetailerInvalidVatIdException(retailer.VatId, ex);
+            throw new RetailerInvalidTaxIdException(command.TaxId, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerInvalidName)
         {
-            throw new RetailerInvalidNameException(retailer.Name, ex);
+            throw new RetailerInvalidNameException(command.Name, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
-            throw new RetailerNotFoundException(retailer.RetailerNo, ex);
+            throw new RetailerNotFoundException(command.RetailerNo, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
         {
-            throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
+            throw new RetailerCurrencyLostException(command.RetailerNo, command.UpdatedDtm, ex);
         }
-        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateVatId)
+        catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateTaxId)
         {
-            throw new RetailerDuplicateVatIdException(retailer.VatId, ex);
+            throw new RetailerDuplicateTaxIdException(command.TaxId, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerDuplicateName)
         {
-            throw new RetailerDuplicateNameException(retailer.Name, ex);
+            throw new RetailerDuplicateNameException(command.Name, ex);
         }
     }
 
-    public async Task ObsoleteAsync(RetailerObsoleteCommand retailer)
+    public async Task ObsoleteAsync(RetailerObsoleteCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "Retailer_Obsolete_tr",
-                new { retailer.RetailerNo, retailer.UpdatedDtm },
+                new { command.RetailerNo, command.UpdatedDtm },
                 commandType: CommandType.StoredProcedure
             );
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
-            throw new RetailerNotFoundException(retailer.RetailerNo, ex);
+            throw new RetailerNotFoundException(command.RetailerNo, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
         {
-            throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
+            throw new RetailerCurrencyLostException(command.RetailerNo, command.UpdatedDtm, ex);
         }
     }
 
-    public async Task RestoreAsync(RetailerRestoreCommand retailer)
+    public async Task RestoreAsync(RetailerRestoreCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("AdminConnection"));
-
+        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "Retailer_Restore_tr",
-                new { retailer.RetailerNo, retailer.UpdatedDtm },
+                new { command.RetailerNo, command.UpdatedDtm },
                 commandType: CommandType.StoredProcedure
             );
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerNotFound)
         {
-            throw new RetailerNotFoundException(retailer.RetailerNo, ex);
+            throw new RetailerNotFoundException(command.RetailerNo, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerCurrencyLost)
         {
-            throw new RetailerCurrencyLostException(retailer.RetailerNo, retailer.UpdatedDtm, ex);
+            throw new RetailerCurrencyLostException(command.RetailerNo, command.UpdatedDtm, ex);
         }
     }
 }

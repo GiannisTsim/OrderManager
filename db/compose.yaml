@@ -14,7 +14,7 @@ services:
       - SQLCMDPASSWORD=${MSSQL_SA_PASSWORD}
       - DB_NAME=${DB_NAME}
     healthcheck:
-      test: /opt/mssql-tools/bin/sqlcmd -d ${DB_NAME} -Q "SELECT 1" -b -o /dev/null
+      test: /opt/mssql-tools18/bin/sqlcmd -C -d ${DB_NAME} -Q "SELECT 1" -b -o /dev/null
       interval: 10s
       timeout: 3s
       retries: 10
@@ -29,6 +29,7 @@ services:
     environment:
       - TZ=${TIMEZONE}
       - LIQUIBASE_STRICT=true
+      - LIQUIBASE_SEARCH_PATH=/liquibase/changelog
       - LIQUIBASE_COMMAND_CHANGELOG_FILE=root.xml
       - LIQUIBASE_COMMAND_URL=jdbc:sqlserver://mssql;databaseName=${DB_NAME};encrypt=true;trustServerCertificate=true;
       - LIQUIBASE_COMMAND_USERNAME=sa

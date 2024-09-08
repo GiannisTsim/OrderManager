@@ -1,6 +1,5 @@
-namespace OrderManager.Core.Retailer.Exceptions;
+namespace OrderManager.Core.Retailer.Exceptions.Retailer;
 
-[Serializable]
 public class RetailerCurrencyLostException : Exception
 {
     private const string DefaultMessageTemplate = "Retailer '{0}' currency timestamp not matching {1:o}.";

@@ -1,0 +1,34 @@
+<Project Sdk="Microsoft.NET.Sdk.Web">
+
+    <PropertyGroup>
+        <TargetFramework>net8.0</TargetFramework>
+        <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
+        <AssemblyName>OrderManager.Web.Admin</AssemblyName>
+        <RootNamespace>OrderManager.Web.Admin</RootNamespace>
+    </PropertyGroup>
+
+    <ItemGroup>
+        <ProjectReference Include="..\Core\Core.csproj"/>
+        <ProjectReference Include="..\Infrastructure.SqlServer\Infrastructure.SqlServer.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+        <ProjectReference Include="..\Localization\Localization.csproj"/>
+        <ProjectReference Include="..\Web\Web.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Htmx" Version="1.6.1"/>
+        <PackageReference Include="Htmx.TagHelpers" Version="1.6.1"/>
+        <PackageReference Include="JetBrains.Annotations" Version="2023.3.0"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="**\*.Form.cshtml">
+            <DependentUpon>$([System.String]::Copy(%(Filename)).Replace('.Form', '.cshtml'))</DependentUpon>
+        </Content>
+        <Content Update="**\*.el.cshtml">
+            <DependentUpon>$([System.String]::Copy(%(Filename)).Replace('.el', '.cshtml'))</DependentUpon>
+        </Content>
+    </ItemGroup>
+
+</Project>

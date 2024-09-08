@@ -11,9 +11,9 @@ public static class SqlErrorCodes
     public const int PersonAdminRoleNotFound = 51203;
 
     // Retailer cluster
-    public const int RetailerInvalidVatId = 52101;
+    public const int RetailerInvalidTaxId = 52101;
     public const int RetailerInvalidName = 52102;
-    public const int RetailerDuplicateVatId = 52103;
+    public const int RetailerDuplicateTaxId = 52103;
     public const int RetailerDuplicateName = 52104;
     public const int RetailerNotFound = 52105;
     public const int RetailerCurrencyLost = 52106;

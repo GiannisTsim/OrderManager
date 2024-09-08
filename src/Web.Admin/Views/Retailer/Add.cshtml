@@ -1,0 +1,13 @@
+@model OrderManager.Web.Admin.Models.Retailer.AddViewModel
+@{
+    ViewData["Title"] = "New retailer";
+}
+
+<div class="col-lg-6 offset-lg-3">
+    <h3>Add new retailer</h3>
+    <partial model="@Model.AddInput" name="Add.Form"/>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml"/>
+}

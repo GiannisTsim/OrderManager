@@ -6,14 +6,14 @@
 CREATE TABLE Retailer
 (
     RetailerNo RetailerNo   NOT NULL,
-    VatId      VatId        NOT NULL,
+    TaxId      TaxId        NOT NULL,
     Name       RetailerName NOT NULL,
     UpdatedDtm _CurrencyDtm NOT NULL,
     IsObsolete _Bool        NOT NULL,
     CONSTRAINT UC_Retailer_PK PRIMARY KEY CLUSTERED (RetailerNo),
-    CONSTRAINT U__Retailer_AK1 UNIQUE (VatId),
+    CONSTRAINT U__Retailer_AK1 UNIQUE (TaxId),
     CONSTRAINT U__Retailer_AK2 UNIQUE (Name),
-    CONSTRAINT VatId_NotEmpty_ck CHECK (VatId != ''),
+    CONSTRAINT TaxId_NotEmpty_ck CHECK (TaxId != ''),
     CONSTRAINT RetailerName_NotEmpty_ck CHECK (Name != '')
 );
 -- rollback DROP TABLE Retailer;

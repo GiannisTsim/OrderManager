@@ -1,6 +1,5 @@
-namespace OrderManager.Core.Retailer.Exceptions;
+namespace OrderManager.Core.Retailer.Exceptions.Retailer;
 
-[Serializable]
 public class RetailerDuplicateNameException : Exception
 {
     private const string DefaultMessageTemplate = "Retailer with name '{0}' already exists.";

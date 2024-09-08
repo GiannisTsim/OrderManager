@@ -1,0 +1,13 @@
+@model OrderManager.Web.Admin.Models.Retailer.ModifyViewModel
+@{
+    ViewData["Title"] = "Modify retailer";
+}
+
+<div class="col-lg-6 offset-lg-3">
+    <h3>Modify retailer</h3>
+    <partial model="@Model.ModifyInput" name="Modify.Form"/>
+</div>
+
+@section Scripts {
+    <partial name="_ValidationScriptsPartial.cshtml"/>
+}
