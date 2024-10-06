@@ -6,6 +6,7 @@
         <Nullable>enable</Nullable>
         <AssemblyName>OrderManager.Infrastructure.SqlServer</AssemblyName>
         <RootNamespace>OrderManager.Infrastructure.SqlServer</RootNamespace>
+        <InterceptorsPreviewNamespaces>$(InterceptorsPreviewNamespaces);Dapper.AOT</InterceptorsPreviewNamespaces>
     </PropertyGroup>
 
     <ItemGroup>
@@ -14,6 +15,7 @@
 
     <ItemGroup>
         <PackageReference Include="Dapper"/>
+        <PackageReference Include="Dapper.AOT"/>
         <PackageReference Include="Microsoft.Data.SqlClient"/>
         <PackageReference Include="Microsoft.Extensions.Configuration.Abstractions"/>
         <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions"/>
