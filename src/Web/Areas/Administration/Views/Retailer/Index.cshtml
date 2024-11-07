@@ -1,0 +1,101 @@
+@model OrderManager.Web.Areas.Administration.Models.Retailer.IndexViewModel
+@{
+    ViewData["Title"] = "Retailer";
+}
+
+<h3>Retailer</h3>
+
+<a asp-action="Add" asp-route-cancellationReturnUrl="@Context.Request.GetEncodedPathAndQuery()">Add</a>
+
+<form method="get">
+    <div class="input-group mb-1">
+        <input asp-for="SearchTerm" class="form-control" type="search"/>
+        <button class="btn btn-outline-secondary" type="submit">Search</button>
+    </div>
+</form>
+@if (Model.SearchTerm != null)
+{
+    <div>
+        <span>Results matching: </span>
+        <a asp-action="Index" class="btn btn-outline-secondary">@Model.SearchTerm X</a>
+    </div>
+}
+
+@if (Model.Retailers.Count() != 0)
+{
+    <table class="table table-striped table-borderless table-hover">
+        <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(m => m.Retailers.First().OrdinalNo)</th>
+            <th>@Html.DisplayNameFor(m => m.Retailers.First().TaxId)</th>
+            <th>@Html.DisplayNameFor(m => m.Retailers.First().Name)</th>
+            <th>@Html.DisplayNameFor(m => m.Retailers.First().IsObsolete)</th>
+            <th>@Html.DisplayNameFor(m => m.Retailers.First().BranchCount)</th>
+            <th></th>
+        </tr>
+        </thead>
+        <tbody class="table-group-divider">
+        @foreach (var retailer in Model.Retailers)
+        {
+            <tr>
+                <td>@retailer.OrdinalNo</td>
+                <td>@retailer.TaxId</td>
+                <td>@retailer.Name</td>
+                <td>@retailer.IsObsolete</td>
+                <td>@retailer.BranchCount</td>
+                <td>
+                    <a asp-action="Details" asp-route-retailerNo="@retailer.RetailerNo">View</a>
+                    <a asp-action="Modify" asp-route-cancellationReturnUrl="@Context.Request.GetEncodedPathAndQuery()" asp-route-retailerNo="@retailer.RetailerNo">Edit</a>
+                    <a asp-action="Obsolete" asp-route-retailerNo="@retailer.RetailerNo">Delete</a>
+                    @* <partial name="_DeleteForm.cshtml"   model="Model.ObsoleteInputModel"/> *@
+                    @* <form method="post" asp-area="Administration" asp-controller="Retailer" asp-action="Obsolete"> *@
+                    @*     <input type="hidden" asp-for="RetailerObsoleteInputModel.RetailerNo" value="@retailer.RetailerNo"/> *@
+                    @*     <input type="hidden" asp-for="RetailerObsoleteInputModel.UpdatedDtm" value="@retailer.UpdatedDtm.ToString("o")"/> *@
+                    @*     <button type="submit" onclick="return confirm('Are you sure you want to delete the user?');">Delete</button> *@
+                    @* </form> *@
+                </td>
+            </tr>
+        }
+        </tbody>
+    </table>
+
+
+    <span>@Model.PageResultRange.FirstResultNo - @Model.PageResultRange.LastResultNo of @Model.TotalResultCount</span>
+
+    <nav>
+        @{
+            var queryParams = new Dictionary<string, string>();
+            foreach (var kv in Context.Request.Query)
+            {
+                if (kv.Value.Count > 1)
+                {
+                    for (var i = 0; i < kv.Value.Count; i++)
+                    {
+                        queryParams.Add($"{kv.Key}[{i}]", kv.Value[i]!);
+                    }
+                }
+                else
+                {
+                    queryParams.Add($"{kv.Key}", kv.Value.ToString());
+                }
+            }
+        }
+
+        <ul class="pagination">
+            <li class="@(Model.HasPreviousPage ? "" : "disabled") page-item">
+                <a asp-all-route-data="queryParams" asp-route-pageNo="@(Model.PageNo - 1)" class="page-link">Previous</a>
+            </li>
+
+            @for (var i = 1; i <= Model.PageCount; i++)
+            {
+                <li aria-current="page" class=" @(i == Model.PageNo ? "active" : "") page-item">
+                    <a asp-all-route-data="queryParams" asp-route-pageNo="@i" class="page-link">@i</a>
+                </li>
+            }
+
+            <li class="page-item @(Model.HasNextPage ? "" : "disabled") ">
+                <a asp-all-route-data="queryParams" asp-route-pageNo="@(Model.PageNo + 1)" class="page-link">Next</a>
+            </li>
+        </ul>
+    </nav>
+}

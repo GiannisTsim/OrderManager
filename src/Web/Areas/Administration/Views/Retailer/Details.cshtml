@@ -1,0 +1,12 @@
+@model OrderManager.Web.Areas.Administration.Models.Retailer.DetailsViewModel
+@{
+    ViewData["Title"] = Model.Retailer.Name;
+}
+
+<h2>@Model.Retailer.Name</h2>
+<p>@Model.Retailer.TaxId</p>
+
+<a asp-action="Modify" asp-route-cancellationReturnUrl="@Context.Request.GetEncodedPathAndQuery()" asp-route-retailerNo="@Model.Retailer.RetailerNo">Modify</a>
+<a asp-action="Obsolete" asp-route-retailerNo="@Model.Retailer.RetailerNo">Delete</a>
+
+<a asp-action="Index">Back to List</a>

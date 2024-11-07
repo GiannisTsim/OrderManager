@@ -1,23 +1,19 @@
 using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using OrderManager.Core.Retailer.Abstractions;
 using OrderManager.Core.Retailer.Commands.Retailer;
 using OrderManager.Core.Retailer.Exceptions.Retailer;
 using OrderManager.Core.Retailer.Models;
+using OrderManager.Infrastructure.SqlServer.Abstractions;
 using OrderManager.Infrastructure.SqlServer.Constants;
+using OrderManager.Infrastructure.SqlServer.Repositories.Abstractions;
 
 namespace OrderManager.Infrastructure.SqlServer.Repositories;
 
-public class RetailerRepository : IRetailerRepository
+public class RetailerRepository : RepositoryBase, IRetailerRepository
 {
-    private readonly IConfiguration _configuration;
-
-    public RetailerRepository(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public RetailerRepository(IConnectionStringProvider sqlCredentialProvider) : base(sqlCredentialProvider) { }
 
     // TODO: Simplify query string or move in database function
     public async Task<IEnumerable<RetailerDetails>> GetDetailsAsync(
@@ -27,7 +23,7 @@ public class RetailerRepository : IRetailerRepository
         int? pageNo = 1,
         int? pageSize = 10)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         var retailers = await connection.QueryAsync<RetailerDetails>(
             """
             SELECT RetailerNo,
@@ -58,7 +54,7 @@ public class RetailerRepository : IRetailerRepository
     // TODO: Simplify query string or move in database function
     public async Task<int> GetTotalResultCountAsync(string? searchTerm = null)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         var totalResultCount = await connection.ExecuteScalarAsync<int>(
             """
             SELECT COUNT(*)
@@ -73,7 +69,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<RetailerDetails?> FindDetailsByRetailerNoAsync(int retailerNo)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         var retailer = await connection.QuerySingleOrDefaultAsync<RetailerDetails>(
             """
             SELECT RetailerNo,
@@ -92,7 +88,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<RetailerSimple?> FindByTaxIdAsync(string taxId)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         var retailer = await connection.QuerySingleOrDefaultAsync<RetailerSimple>(
             """
             SELECT RetailerNo,
@@ -108,7 +104,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<RetailerSimple?> FindByNameAsync(string name)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         var retailer = await connection.QuerySingleOrDefaultAsync<RetailerSimple>(
             """
             SELECT RetailerNo,
@@ -124,7 +120,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task<int> AddAsync(RetailerAddCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
             var p = new DynamicParameters(new { command.TaxId, command.Name });
@@ -153,7 +149,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task ModifyAsync(RetailerModifyCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
             await connection.ExecuteAsync(
@@ -190,7 +186,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task ObsoleteAsync(RetailerObsoleteCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
             await connection.ExecuteAsync(
@@ -211,7 +207,7 @@ public class RetailerRepository : IRetailerRepository
 
     public async Task RestoreAsync(RetailerRestoreCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
             await connection.ExecuteAsync(

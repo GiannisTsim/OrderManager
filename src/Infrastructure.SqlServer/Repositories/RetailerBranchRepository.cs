@@ -1,28 +1,24 @@
 using System.Data;
 using Dapper;
 using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using OrderManager.Core.Retailer.Abstractions;
 using OrderManager.Core.Retailer.Commands.RetailerBranch;
 using OrderManager.Core.Retailer.Exceptions.Retailer;
 using OrderManager.Core.Retailer.Exceptions.RetailerBranch;
 using OrderManager.Core.Retailer.Models;
+using OrderManager.Infrastructure.SqlServer.Abstractions;
 using OrderManager.Infrastructure.SqlServer.Constants;
+using OrderManager.Infrastructure.SqlServer.Repositories.Abstractions;
 
 namespace OrderManager.Infrastructure.SqlServer.Repositories;
 
-public class RetailerBranchRepository : IRetailerBranchRepository
+public class RetailerBranchRepository : RepositoryBase, IRetailerBranchRepository
 {
-    private readonly IConfiguration _configuration;
-
-    public RetailerBranchRepository(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public RetailerBranchRepository(IConnectionStringProvider sqlCredentialProvider) : base(sqlCredentialProvider) { }
 
     public async Task<IEnumerable<RetailerBranch>> GetAsync(int retailerNo)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         return await connection.QueryAsync<RetailerBranch>
         (
             """
@@ -40,7 +36,7 @@ public class RetailerBranchRepository : IRetailerBranchRepository
 
     public async Task<int> AddAsync(RetailerBranchAddCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
             var p = new DynamicParameters(new { command.RetailerNo, command.Name });
@@ -65,11 +61,10 @@ public class RetailerBranchRepository : IRetailerBranchRepository
 
     public async Task ModifyAsync(RetailerBranchModifyCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "RetailerBranch_Modify_tr",
                 new { command.RetailerNo, command.BranchNo, command.UpdatedDtm, command.Name },
                 commandType: CommandType.StoredProcedure
@@ -85,8 +80,7 @@ public class RetailerBranchRepository : IRetailerBranchRepository
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerBranchCurrencyLost)
         {
-            throw new RetailerBranchCurrencyLostException
-                (command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
+            throw new RetailerBranchCurrencyLostException(command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerBranchDuplicateName)
         {
@@ -96,11 +90,10 @@ public class RetailerBranchRepository : IRetailerBranchRepository
 
     public async Task ObsoleteAsync(RetailerBranchObsoleteCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "RetailerBranch_Obsolete_tr",
                 new { command.RetailerNo, command.BranchNo, command.UpdatedDtm },
                 commandType: CommandType.StoredProcedure
@@ -112,18 +105,16 @@ public class RetailerBranchRepository : IRetailerBranchRepository
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerBranchCurrencyLost)
         {
-            throw new RetailerBranchCurrencyLostException
-                (command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
+            throw new RetailerBranchCurrencyLostException(command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
         }
     }
 
     public async Task RestoreAsync(RetailerBranchRestoreCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
+        await using var connection = SqlConnection;
         try
         {
-            await connection.ExecuteAsync
-            (
+            await connection.ExecuteAsync(
                 "RetailerBranch_Restore_tr",
                 new { command.RetailerNo, command.BranchNo, command.UpdatedDtm },
                 commandType: CommandType.StoredProcedure
@@ -135,8 +126,7 @@ public class RetailerBranchRepository : IRetailerBranchRepository
         }
         catch (SqlException ex) when (ex.Number == SqlErrorCodes.RetailerBranchCurrencyLost)
         {
-            throw new RetailerBranchCurrencyLostException
-                (command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
+            throw new RetailerBranchCurrencyLostException(command.RetailerNo, command.BranchNo, command.UpdatedDtm, ex);
         }
     }
 }

@@ -1,15 +1,38 @@
-﻿<Project Sdk="Microsoft.NET.Sdk">
+<Project Sdk="Microsoft.NET.Sdk.Web">
 
     <PropertyGroup>
         <TargetFramework>net8.0</TargetFramework>
-        <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+        <ImplicitUsings>enable</ImplicitUsings>
         <AssemblyName>OrderManager.Web</AssemblyName>
         <RootNamespace>OrderManager.Web</RootNamespace>
     </PropertyGroup>
 
     <ItemGroup>
-        <FrameworkReference Include="Microsoft.AspNetCore.App"/>
+        <ProjectReference Include="..\Core\Core.csproj"/>
+        <ProjectReference Include="..\Infrastructure.SqlServer\Infrastructure.SqlServer.csproj"/>
+        <ProjectReference Include="..\Infrastructure\Infrastructure.csproj"/>
+        <ProjectReference Include="..\Localization\Localization.csproj"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <PackageReference Include="Htmx"/>
+        <PackageReference Include="Htmx.TagHelpers"/>
+        <PackageReference Include="JetBrains.Annotations"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <Content Update="**\*.Form.cshtml">
+            <DependentUpon>$([System.String]::Copy(%(Filename)).Replace('.Form', '.cshtml'))</DependentUpon>
+        </Content>
+        <Content Update="**\*.el.cshtml">
+            <DependentUpon>$([System.String]::Copy(%(Filename)).Replace('.el', '.cshtml'))</DependentUpon>
+        </Content>
+    </ItemGroup>
+
+    <ItemGroup>
+        <AdditionalFiles Include="Areas\Store\Views\_ViewImports.cshtml"/>
+        <AdditionalFiles Include="Areas\Store\Views\_ViewStart.cshtml"/>
     </ItemGroup>
 
 </Project>

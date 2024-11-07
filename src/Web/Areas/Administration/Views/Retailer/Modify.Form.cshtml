@@ -1,0 +1,26 @@
+@model OrderManager.Web.Areas.Administration.Models.Retailer.ModifyViewModel.ModifyInputModel
+
+<form autocomplete="off" method="post">
+    <div asp-validation-summary="ModelOnly" class="text-danger" role="alert"></div>
+
+    <input asp-for="RetailerNo" type="hidden"/>
+    <input asp-for="UpdatedDtm" asp-format="{0:o}" type="hidden"/>
+
+    <div class="form-floating mb-3">
+        <input asp-for="TaxId" class="form-control"/>
+        <label asp-for="TaxId"></label>
+        <span asp-validation-for="TaxId"></span>
+    </div>
+
+    <div class="form-floating mb-3">
+        <input asp-for="Name" class="form-control"/>
+        <label asp-for="Name"></label>
+        <span asp-validation-for="Name"></span>
+    </div>
+
+    <div class="d-flex gap-2">
+        <a class="btn btn-outline-secondary" href="@Model.CancellationReturnUrl">Cancel</a>
+        <button class="btn btn-primary" type="submit">Submit</button>
+        <button class="btn ms-auto" type="reset">Reset changes</button>
+    </div>
+</form>

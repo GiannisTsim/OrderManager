@@ -20,8 +20,12 @@ public class BootstrapValidationHtmlGenerator(
     HtmlEncoder htmlEncoder,
     ValidationHtmlAttributeProvider validationAttributeProvider
 )
-    : DefaultHtmlGenerator
-        (antiforgery, optionsAccessor, metadataProvider, urlHelperFactory, htmlEncoder, validationAttributeProvider)
+    : DefaultHtmlGenerator(antiforgery,
+        optionsAccessor,
+        metadataProvider,
+        urlHelperFactory,
+        htmlEncoder,
+        validationAttributeProvider)
 {
     protected override TagBuilder GenerateInput(
         ViewContext viewContext,
@@ -36,8 +40,7 @@ public class BootstrapValidationHtmlGenerator(
         string format,
         IDictionary<string, object> htmlAttributes)
     {
-        var tagBuilder = base.GenerateInput
-        (
+        var tagBuilder = base.GenerateInput(
             viewContext,
             inputType,
             modelExplorer,
@@ -65,8 +68,7 @@ public class BootstrapValidationHtmlGenerator(
         bool allowMultiple,
         object htmlAttributes)
     {
-        var tagBuilder = base.GenerateSelect
-        (
+        var tagBuilder = base.GenerateSelect(
             viewContext,
             modelExplorer,
             optionLabel,
@@ -103,8 +105,8 @@ public class BootstrapValidationHtmlGenerator(
         string tag,
         object htmlAttributes)
     {
-        var tagBuilder = base.GenerateValidationMessage
-            (viewContext, modelExplorer, expression, message, tag, htmlAttributes);
+        var tagBuilder =
+            base.GenerateValidationMessage(viewContext, modelExplorer, expression, message, tag, htmlAttributes);
         ReplaceValidationMessageCssClassNames(tagBuilder);
 
         return tagBuilder;

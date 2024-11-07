@@ -1,21 +1,17 @@
 using System.Data;
 using Dapper;
-using Microsoft.Data.SqlClient;
-using Microsoft.Extensions.Configuration;
 using OrderManager.Core.Retailer.Abstractions;
 using OrderManager.Core.Retailer.Commands.RetailerBranchAgent;
+using OrderManager.Infrastructure.SqlServer.Abstractions;
+using OrderManager.Infrastructure.SqlServer.Repositories.Abstractions;
 
 namespace OrderManager.Infrastructure.SqlServer.Repositories;
 
 // TODO: Add exception handling
-public class RetailerBranchAgentRepository : IRetailerBranchAgentRepository
+public class RetailerBranchAgentRepository : RepositoryBase, IRetailerBranchAgentRepository
 {
-    private readonly IConfiguration _configuration;
-
-    public RetailerBranchAgentRepository(IConfiguration configuration)
-    {
-        _configuration = configuration;
-    }
+    public RetailerBranchAgentRepository(IConnectionStringProvider sqlCredentialProvider) :
+        base(sqlCredentialProvider) { }
 
     public async Task<int> AddWithInviteeAsync(RetailerBranchAgentInviteCommand command)
     {
@@ -29,10 +25,8 @@ public class RetailerBranchAgentRepository : IRetailerBranchAgentRepository
         );
         p.Add("@AgentNo", DbType.Int32, direction: ParameterDirection.Output);
 
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-        await connection.ExecuteAsync
-        (
+        await using var connection = SqlConnection;
+        await connection.ExecuteAsync(
             "RetailerBranchAgent_Add_tr",
             p,
             commandType: CommandType.StoredProcedure
@@ -44,10 +38,8 @@ public class RetailerBranchAgentRepository : IRetailerBranchAgentRepository
 
     public async Task AddAsync(RetailerBranchAgentAddCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-        await connection.ExecuteAsync
-        (
+        await using var connection = SqlConnection;
+        await connection.ExecuteAsync(
             "RetailerBranchAgent_Add_tr",
             new { command.RetailerNo, command.BranchNo, command.AgentNo },
             commandType: CommandType.StoredProcedure
@@ -56,10 +48,8 @@ public class RetailerBranchAgentRepository : IRetailerBranchAgentRepository
 
     public async Task ObsoleteAsync(RetailerBranchAgentObsoleteCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-        await connection.ExecuteAsync
-        (
+        await using var connection = SqlConnection;
+        await connection.ExecuteAsync(
             "RetailerBranchAgent_Obsolete_tr",
             new { command.RetailerNo, command.BranchNo, command.AgentNo, command.UpdatedDtm },
             commandType: CommandType.StoredProcedure
@@ -68,10 +58,8 @@ public class RetailerBranchAgentRepository : IRetailerBranchAgentRepository
 
     public async Task RestoreAsync(RetailerBranchAgentRestoreCommand command)
     {
-        await using var connection = new SqlConnection(_configuration.GetConnectionString("DefaultConnection"));
-
-        await connection.ExecuteAsync
-        (
+        await using var connection = SqlConnection;
+        await connection.ExecuteAsync(
             "RetailerBranchAgent_Restore_tr",
             new { command.RetailerNo, command.BranchNo, command.AgentNo, command.UpdatedDtm },
             commandType: CommandType.StoredProcedure
